@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Municipality of Binangonan leptospirosis and dengue surveillance with automatic historical thresholds and printable reports">
+<title>Binangonan Leptospirosis Surveillance</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="print-report.css">
+<link rel="stylesheet" href="dengue-report.css">
+<link rel="stylesheet" href="surveillance.css">
+<link rel="icon" href="assets/municipality.png">
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+<div class="brand"><img src="assets/municipality.png" alt="Municipality of Binangonan seal"><div><strong>BINANGONAN<br>DISEASE SURVEILLANCE</strong><small>Municipal Health Office</small></div></div>
+<div class="disease-picker"><label for="diseaseSelect">Disease programme</label><select id="diseaseSelect"><option value="leptospirosis">Leptospirosis</option><option value="dengue">Dengue</option></select></div>
+<nav class="nav" aria-label="Main navigation">
+<button class="active" data-view="dashboard"><span class="icon">▦</span><span>Dashboard</span></button>
+<button data-view="cases"><span class="icon">☷</span><span>Case registry</span></button>
+<button data-view="report"><span class="icon">▤</span><span>Report &amp; print</span></button>
+<button data-view="thresholds"><span class="icon">⌁</span><span>Automatic thresholds</span></button>
+</nav>
+<div class="side-note"><strong>Local surveillance workspace</strong><br>Leptospirosis and dengue records stay in this browser. Add cases, maintain historical data, and print municipal reports.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div><div class="eyebrow">Municipality of Binangonan · Rizal</div><h1 id="pageTitle">Leptospirosis surveillance dashboard</h1></div><div class="top-actions"><button class="btn" id="topAdd">＋ <span>New case</span></button><button class="btn primary" id="topPrint">⎙ <span>Print report</span></button></div></header>
+<div class="content">
+<div id="appNotice" role="alert" hidden></div>
+<section class="view active" id="dashboardView">
+<div class="toolbar"><div><div class="eyebrow">Figure set 1–5</div><h2>Situation dashboard</h2><p id="dashboardDescription">Weekly monitoring for case counts, demographics, classification, exposure, and laboratory results.</p></div><div class="filters"><div class="field"><label for="dashYear">REPORTING YEAR</label><select id="dashYear"></select></div><div class="field"><label for="dashWeek">THROUGH MW</label><input id="dashWeek" class="dashboard-cutoff" type="number" min="1" max="53" value="35"></div></div></div>
+<div class="stats" id="stats"></div><div class="insight"><div><strong id="insightTitle">Surveillance summary</strong><span id="insightText"></span></div><div class="badge" id="insightBadge"></div></div><div class="figure-grid" id="dashboardFigures"></div>
+</section>
+<section class="view" id="thresholdsView"><div class="toolbar"><div><div class="eyebrow">Historical baseline</div><h2>Automatic alert &amp; epidemic thresholds</h2><p>Separate historical baselines for leptospirosis and dengue in Binangonan.</p></div><div class="field"><label for="thresholdYear">REPORTING YEAR</label><select id="thresholdYear"></select></div></div><div class="baseline-actions"><button class="btn primary" id="saveBaseline">Save historical baseline</button><span id="baselineFeedback" class="baseline-feedback" role="status"></span></div><div id="baselineEditor"></div><p class="status-line">Method reference: <a href="https://www.foi.gov.ph/documentview/view/pidsr-mop-3rd-edition/" target="_blank" rel="noopener">DOH PIDSR Manual, section 5.3.5</a>. This app uses sample SD (n − 1).</p></section>
+<section class="view" id="casesView">
+<div class="toolbar"><div><div class="eyebrow">Case registry</div><h2>Reported cases</h2><p>Review current records or add a newly reported case for Binangonan.</p></div><div class="filters"><div class="field"><label for="caseSearch">SEARCH</label><input id="caseSearch" placeholder="Case ID, barangay, exposure..." style="min-width:230px"></div><button class="btn primary" id="addCase">＋ Add case</button></div></div>
+<div class="status-line" id="caseStatus"></div><div class="table-wrap" style="margin-top:12px"><table class="data-table"><thead><tr><th>Case ID</th><th>Year / MW</th><th>Sex</th><th>Age</th><th>Barangay</th><th>Classification</th><th id="registryDiseaseColumn">Exposure</th><th>Outcome</th><th></th></tr></thead><tbody id="casesTable"></tbody></table></div>
+</section>
+<section class="view" id="reportView">
+<div class="toolbar"><div><div class="eyebrow">Weekly report</div><h2>Report preview</h2><p id="reportHint">3 pages · 8.5 × 13 inches (Long / Folio). Print at 100%, with background graphics on and headers/footers off.</p></div><button class="btn primary" id="reportPrint">⎙ Print / Save as PDF</button></div>
+<div class="report-tools"><div class="left"><div class="field"><label for="reportYear">REPORTING YEAR</label><select id="reportYear"></select></div><div class="field"><label for="reportWeek">MORBIDITY WEEK</label><input type="number" id="reportWeek" min="1" max="53" value="35" style="width:100px"></div><div class="field"><label for="reportEnd">WEEK ENDING</label><input type="date" id="reportEnd"></div><div class="field"><label for="reportPrepared">PREPARED BY</label><input id="reportPrepared" maxlength="65" placeholder="Name / signature"></div></div><div class="right"><button class="btn" id="exportData">Download data backup</button><button class="btn" id="resetData">Restore leptos workbook</button></div></div>
+<details class="report-signatory-controls"><summary>Report signatories</summary><div class="signer-grid">
+<div class="field"><label for="preparedRole">PREPARER POSITION</label><input id="preparedRole" maxlength="70" value="Disease Surveillance Officer"></div>
+<div class="field"><label for="reviewed">REVIEWED BY</label><input id="reviewed" maxlength="65" placeholder="Name / signature"></div>
+<div class="field"><label for="reviewedRole">REVIEWER POSITION</label><input id="reviewedRole" maxlength="70" value="Municipal Health Office"></div>
+<div class="field"><label for="noted">NOTED BY</label><input id="noted" maxlength="65" placeholder="Name / signature"></div>
+<div class="field"><label for="notedRole">POSITION</label><input id="notedRole" maxlength="70" value="Municipal Health Officer"></div>
+</div></details><div class="report-preview" id="reportPreview"></div>
+</section>
+</div>
+</main>
+</div>
+<div class="modal" id="caseModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add new leptospirosis case</h3><p>Enter the fields available at first notification; the report updates immediately.</p></div><button class="close" id="closeModal" aria-label="Close">×</button></div>
+<form class="form" id="caseForm"><div class="form-grid">
+<div class="field"><label>CASE ID</label><input name="id" required placeholder="e.g. 2026-BIN-0001"></div><div class="field"><label>YEAR</label><input name="year" type="number" min="2020" max="2100" required></div><div class="field"><label>MORBIDITY WEEK</label><input name="mw" type="number" min="1" max="53" required></div>
+<div class="field"><label>DATE OF ONSET</label><input name="onset" type="date"></div><div class="field"><label>SEX</label><select name="sex"><option>Male</option><option>Female</option><option>Unknown</option></select></div><div class="field"><label>AGE (YEARS)</label><input name="age" type="number" min="0" max="120" step="0.01" required></div>
+<div class="field"><label>CLASSIFICATION</label><select name="classification"><option>Suspect</option><option>Probable</option><option>Confirmed</option></select></div><div class="field"><label>OUTCOME</label><select name="outcome"><option>Alive</option><option>Died</option></select></div><div class="field" data-leptos-only><label>EXPOSURE</label><select name="exposure"><option>Flood related</option><option>Mud Exposure</option><option>Agriculture related</option><option>Ingestion of contaminated foods/drinks</option><option>Others</option><option>Unknown</option></select></div>
+<div class="field" data-dengue-only hidden><label>RECORDED CLINICAL CATEGORY</label><select name="clinicalCategory"><option>Not recorded</option><option>Dengue without warning signs</option><option>Dengue with warning signs</option><option>Severe dengue</option></select></div>
+<div class="field wide" data-leptos-only><label>PLACE OF EXPOSURE</label><input name="exposurePlace" placeholder="Barangay / municipality"></div><div class="field"><label>BARANGAY</label><input name="barangay" placeholder="e.g. Tayuman"></div><div class="field"><label>LABORATORY RESULT</label><select name="labResult"><option>Not tested</option><option>Negative</option><option>Positive</option></select></div><div class="field"><label>TEST CONDUCTED</label><input name="testType" placeholder="RT-PCR, MAT..."></div>
+</div><div class="form-actions"><button type="button" class="btn" id="cancelCase">Cancel</button><button type="submit" class="btn primary">Save case</button></div></form>
+</div></div>
+<script src="seed-data.js"></script>
+<script src="print-report.js"></script>
+<script src="reference-thresholds.js"></script>
+<script src="thresholds.js"></script>
+<script src="dengue-report.js"></script>
+<script src="surveillance-app.js"></script>
+</body>
+</html>
