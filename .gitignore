@@ -1,0 +1,10 @@
+# Local records and generated reports do not belong in the public repository.
+work/
+outputs/
+_site/
+*.xlsx
+*.xls
+*.csv
+*.pdf
+binangonan-surveillance-*.json
+backup-*/
