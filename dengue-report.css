@@ -63,3 +63,11 @@
 .dengue-page .dg-change>span{font-size:7.2pt}.dengue-page .dg-change>span br{display:initial}
 .dengue-page .dg-change>strong{font-size:18pt}
 .dengue-page .dg-change small{grid-column:1/-1;font-size:6.5pt}
+
+/* Classification counts use the same year and week cutoff as the case totals. */
+.dg-count-pair .dg-class-count{background:#e6f0f8;color:#163e65;border:1px solid #c4d8e9;padding:4pt 2pt}
+.dg-count-pair .dg-class-count strong{font-size:20pt;margin-top:2pt}
+.dengue-page .dg-count-pair .dg-class-count{background:#e6f0f8;padding:2pt 1pt}
+.dengue-page .dg-count-pair .dg-class-count span{font-size:6pt}
+.dengue-page .dg-count-pair .dg-class-count strong{font-size:13pt;margin-top:1pt;line-height:1.05}
+.dg-dashboard-card .dg-count-pair .dg-class-count strong{font-size:24px}

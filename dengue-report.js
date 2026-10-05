@@ -15,7 +15,7 @@
     const current=rows.length,previous=prev.length,delta=previous ? 100*(current-previous)/previous : null;
     const display=delta==null ? 'N/A' : `${delta>0?'↑':delta<0?'↓':'↔'}${Number(Math.abs(delta).toFixed(1))}%`;
     const explanation=delta==null ? 'No recorded cases in the prior-year period' : delta>0?'Increase in reported cases':delta<0?'Decrease in reported cases':'No change in reported cases';
-    return `<div class="dg-comparison"><div class="dg-years">${[[year,rows],[year-1,prev]].map(([y,data])=>`<div class="dg-year"><h3>${y}</h3><div class="dg-count-pair"><div><span>CASES</span><strong>${data.length}</strong></div><div><span>DEATHS</span><strong>${data.filter(died).length}</strong></div></div></div>`).join('')}</div><div class="dg-change"><span>Reported Cases<br>Same Period<br>Last Year</span><strong>${display}</strong><small>${explanation}</small></div></div>`;
+    return `<div class="dg-comparison"><div class="dg-years">${[[year,rows],[year-1,prev]].map(([y,data])=>`<div class="dg-year"><h3>${y}</h3><div class="dg-count-pair"><div><span>CASES</span><strong>${data.length}</strong></div><div><span>DEATHS</span><strong>${data.filter(died).length}</strong></div><div class="dg-class-count" data-classification="probable"><span>PROBABLE</span><strong>${data.filter(row=>norm(row.classification)==='probable').length}</strong></div><div class="dg-class-count" data-classification="suspect"><span>SUSPECT</span><strong>${data.filter(row=>norm(row.classification)==='suspect').length}</strong></div></div></div>`).join('')}</div><div class="dg-change"><span>Reported Cases<br>Same Period<br>Last Year</span><strong>${display}</strong><small>${explanation}</small></div></div>`;
   }
 
   function pyramid(rows){
