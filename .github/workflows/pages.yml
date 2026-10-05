@@ -23,15 +23,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Verify public seed is empty
-        run: |
-          node -e "const fs=require('fs'),vm=require('vm'),ctx={window:{}};vm.runInNewContext(fs.readFileSync('seed-data.js','utf8'),ctx,{timeout:1000});if(!Array.isArray(ctx.window.LEPTOS_SEED_DATA)||ctx.window.LEPTOS_SEED_DATA.length!==0)throw Error('Public deployments must not bundle patient records');"
+      - name: Verify approved public dataset
+        run: node scripts/verify-public-data.cjs
       - name: Prepare static site
         run: |
           mkdir -p _site
           cp index.html README.html .nojekyll _site/
           cp styles.css print-report.css dengue-report.css surveillance.css _site/
-          cp seed-data.js print-report.js reference-thresholds.js thresholds.js dengue-report.js surveillance-app.js public-data.js _site/
+          cp seed-data.js print-report.js reference-thresholds.js thresholds.js dengue-report.js surveillance-app.js public-data.js dengue-seed-data.js dengue-import-bootstrap.js _site/
           cp -R assets _site/assets
       - name: Set up Pages
         uses: actions/configure-pages@v5

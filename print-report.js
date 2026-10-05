@@ -9,7 +9,7 @@
   const text = (x,y,s,attrs='') => `<text x="${x}" y="${y}" ${attrs.includes('font-size=')?'':'font-size="9"'} ${attrs}>${e(s)}</text>`;
   const line = (x1,y1,x2,y2,attrs='') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#b9b9b9" stroke-width=".6" ${attrs}/>`;
   const rect = (x,y,w,h,color) => `<rect x="${x}" y="${y}" width="${Math.max(0,w)}" height="${Math.max(0,h)}" fill="${color}"/>`;
-  const svg = (w,h,body,label) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${e(label)}"><rect width="100%" height="100%" fill="white"/>${body}</svg>`;
+  const svg = (w,h,body,label) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${e(label)}"><rect width="${w}" height="${h}" fill="white"/>${body}</svg>`;
   const niceMax = max => Math.max(1, Math.ceil(max / Math.max(1,10**Math.floor(Math.log10(Math.max(max,1)))))*Math.max(1,10**Math.floor(Math.log10(Math.max(max,1)))));
   function firstSunday(year){const d=new Date(Date.UTC(+year,0,1));d.setUTCDate(1+(7-d.getUTCDay())%7);return d;}
   function weeksInYear(year){return Math.round((firstSunday(+year+1)-firstSunday(year))/604800000);}

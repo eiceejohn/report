@@ -79,3 +79,8 @@
  html,body,.main,.content{width:13in!important}
  .source-page{page:leptos;width:13in!important;height:8.5in!important}
 }
+
+/* Chromium can paint SVG background rectangles outside their chart when printing at a reduced scale. The figure already supplies the white paper background. */
+@media print {
+ .source-figure svg > rect:first-child { fill: none !important; }
+}

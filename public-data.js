@@ -5,7 +5,7 @@
  const button=document.createElement('button');button.className='btn';button.type='button';button.textContent='Import local backup';button.id='importLocalBackup';
  const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.hidden=true;input.id='localBackupFile';
  document.querySelector('.report-tools .right').prepend(button,input);
- const note=document.createElement('p');note.className='callout public-data-note';note.textContent='This public app contains no patient dataset. Enter cases or import a local backup in Report & print. Records stay in this browser on this device.';document.querySelector('.content').prepend(note);
+ const note=document.createElement('p');note.className='callout public-data-note';note.textContent='Dengue workbook loaded: 1,374 cases for 2025 and 396 for 2026. New entries and edits are saved in this browser; they are not shared automatically.';document.querySelector('.content').prepend(note);
  button.onclick=()=>input.click();
  input.onchange=async()=>{
    const file=input.files[0];if(!file)return;
@@ -15,7 +15,7 @@
      if(backup.format!=='binangonan-surveillance-v2'||!Array.isArray(backup.cases))throw Error('Use the JSON file created by Download data backup in the Binangonan app.');
      const ids=new Set();
      for(const row of backup.cases){
-       if(!row||typeof row!=='object'||typeof row.id!=='string'||!row.id.trim()||ids.has(row.id)||!Number.isInteger(+row.year)||+row.year<1900||+row.year>2100||!Number.isInteger(+row.mw)||+row.mw<1||+row.mw>BinangonanReport.weeksInYear(+row.year))throw Error('The backup contains invalid or duplicate case records. No data was changed.');
+       if(!row||typeof row!=='object'||typeof row.id!=='string'||!row.id.trim()||ids.has(row.id)||!Number.isInteger(+row.year)||+row.year<1900||+row.year>2100||!Number.isInteger(+row.mw)||+row.mw<1||+row.mw>(row.disease==='dengue'&&+row.year===2025?53:BinangonanReport.weeksInYear(+row.year)))throw Error('The backup contains invalid or duplicate case records. No data was changed.');
        ids.add(row.id);
      }
      const baselines=backup.baselines||{},signatories=backup.signatories||{};
