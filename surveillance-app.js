@@ -16,7 +16,7 @@
    $('#reportEnd').min=BinangonanReport.dateForWeek(year,1);$('#reportEnd').max=BinangonanReport.dateForWeek(year,BinangonanReport.weeksInYear(year));
    document.body.classList.toggle('disease-dengue',disease==='dengue');
    $('#dashboardDescription').textContent=disease==='dengue'?'Weekly cases, annual comparison, age and sex, and barangay clustering.':'Weekly monitoring for case counts, demographics, classification, exposure, and laboratory results.';
-   $('#reportHint').textContent=disease==='dengue'?'1 page · A4 portrait. Print at 100%, with background graphics on and headers/footers off.':'3 pages · 8.5 × 13 inches (Long / Folio). Print at 100%, with background graphics on and headers/footers off.';
+   $('#reportHint').textContent=disease==='dengue'?'1 page · A4 landscape. Print at 100%, with background graphics on and headers/footers off.':'3 pages · 13 × 8.5 inches (Long / Folio), landscape. Print at 100%, with background graphics on and headers/footers off.';
    $('#registryDiseaseColumn').textContent=disease==='dengue'?'Clinical category':'Exposure';
    document.title=`Binangonan ${name()} Surveillance`;
    $('#pageTitle').textContent=view==='dashboard'?`${name()} surveillance dashboard`:view==='cases'?`${name()} case registry`:view==='thresholds'?`${name()} automatic thresholds`:`${name()} report preview`;

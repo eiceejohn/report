@@ -38,3 +38,44 @@
  .source-page{width:8.5in!important;height:13in!important;min-height:0!important;padding:0!important;margin:0!important;max-width:none!important;border:0!important;box-shadow:none!important;zoom:1!important;transform:none!important;break-inside:avoid;break-after:page;page-break-after:always}
  .source-page:last-child{break-after:auto;page-break-after:auto}
 }
+
+/* Three Long/Folio pages, reflowed for landscape without scaling the whole report. */
+.source-page{width:936pt;height:612pt}
+.source-head{left:18pt;top:18pt;width:900pt;height:60pt;gap:15pt}
+.source-head .head-text{font-size:11pt}.source-head strong{font-size:12pt}
+.source-head .wordmark{order:-1;width:112pt;height:48pt}
+.source-banner{left:18pt;top:89pt;width:900pt;height:32pt;grid-template-columns:60% 34% 6%}
+.source-intro{left:18pt;top:133pt;width:438pt;height:auto;font-size:10pt;line-height:1.16}
+.source-intro img{width:66pt;height:76pt}
+.case-definitions{left:18pt;top:246pt;width:438pt;font-size:10pt;line-height:1.18}
+.case-definitions h3{margin:0 auto 5pt;padding:3pt 0}.case-definitions .probable{margin-top:10pt}.case-definitions .confirmed{margin-top:10pt}
+.source-counters{left:480pt;top:134pt;width:438pt;display:grid;grid-template-columns:1fr 1fr;gap:10pt}
+.source-counter{height:85pt;padding:6pt 9pt;border-radius:12pt}.source-counter.deaths{width:auto;height:85pt;margin:0;border-radius:12pt}
+.source-counter b,.source-counter.deaths b{font-size:30pt}.source-counter em{font-size:9pt}
+.source-exposure{grid-column:1/-1;margin:0!important;font-size:9pt;line-height:1.15}.source-exposure br{display:none}
+.source-summary{left:18pt;top:472pt;width:438pt;font-size:9pt;line-height:1.15}.source-summary li{padding-bottom:3pt}
+.source-table-wrap{left:480pt;top:257pt;width:438pt}.source-caption{font-size:9.5pt}
+.source-table{font-size:8.7pt!important}.source-table th,.source-table td{padding:2pt 1.8pt}
+.source-table th:first-child,.source-table td:first-child{width:22%}
+.source-table tbody td:nth-child(2),.source-table tbody td:nth-child(3),.source-table tbody td:nth-child(4),.source-table tbody td:nth-child(5){width:8%}
+.source-table tbody td:nth-child(6){width:10%}.source-table tbody td:nth-child(7){width:24%}.source-table tbody td:nth-child(8){width:12%}
+.source-table-wrap.dense .source-table{font-size:8pt!important}.source-table-wrap.dense .source-table td{padding:1.5pt 1.4pt}
+.table-columns{gap:7pt}.table-columns .source-table,.dense .table-columns .source-table{font-size:6.8pt!important}
+.source-weekly{left:18pt;top:18pt;width:900pt;height:253pt}
+.source-threshold-note{left:22pt;top:277pt;width:892pt;font-size:7.5pt;line-height:1.2}
+.source-grid{left:18pt;top:318pt;width:900pt;height:276pt;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:276pt;gap:10pt}
+.source-grid .source-figure:nth-child(2){height:auto}.source-grid .source-figure figcaption{font-size:9pt;min-height:65pt!important}
+.source-grid .figure-period{white-space:normal;font-size:8pt}
+.source-place{left:18pt;top:18pt;width:360pt;height:279pt}
+.source-actions{left:401pt;top:18pt;width:517pt;height:auto;font-size:10.5pt;line-height:1.25}
+.source-actions .action-paragraph,.source-actions .recommend-intro{margin-bottom:12pt}
+.source-actions .rec{position:static;width:auto;margin:0 0 13pt}
+.source-signatures{left:18pt;top:315pt;width:360pt;height:148pt;padding:15pt;gap:12pt;border-radius:15pt;flex-direction:row;align-items:center;font-size:9pt;line-height:1.2}
+.source-signatures>div{flex:1;min-width:0}.source-signatures .blank-signature{width:85pt}.source-signatures .signature-name{margin:10pt 0}
+.source-disclaimer{left:18pt;top:480pt;width:360pt;font-size:8pt;line-height:1.25}
+@page{size:13in 8.5in;margin:0}
+@page leptos{size:13in 8.5in;margin:0}
+@media print{
+ html,body,.main,.content{width:13in!important}
+ .source-page{page:leptos;width:13in!important;height:8.5in!important}
+}
