@@ -29,8 +29,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html README.html .nojekyll _site/
-          cp styles.css print-report.css dengue-report.css surveillance.css batch-upload.css _site/
-          cp seed-data.js print-report.js reference-thresholds.js thresholds.js dengue-report.js surveillance-app.js public-data.js dengue-seed-data.js dengue-import-bootstrap.js batch-upload.js _site/
+          cp styles.css print-report.css dengue-report.css dengue-details.css surveillance.css batch-upload.css _site/
+          cp seed-data.js print-report.js reference-thresholds.js thresholds.js dengue-report.js dengue-details.js surveillance-app.js public-data.js dengue-seed-data.js dengue-import-bootstrap.js batch-upload.js _site/
           cp -R assets _site/assets
       - name: Set up Pages
         uses: actions/configure-pages@v5

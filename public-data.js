@@ -21,7 +21,8 @@
      const baselines=backup.baselines||{},signatories=backup.signatories||{};
      if(typeof baselines!=='object'||Array.isArray(baselines)||typeof signatories!=='object'||Array.isArray(signatories))throw Error('Invalid baseline or signatory settings. No data was changed.');
      if(!confirm(`Import ${backup.cases.length} case records into this browser? This replaces the current browser records and baseline settings. Keep a downloaded backup of any existing records first.`))return;
-     const values={'binangonan-leptos-cases-v1':JSON.stringify(backup.cases),'binangonan-threshold-baselines-v1':JSON.stringify(baselines),'binangonan-report-settings-v2':JSON.stringify(signatories)},previous={};Object.keys(values).forEach(key=>previous[key]=localStorage.getItem(key));
+     if(backup.dengueDetails!==undefined&&(!backup.dengueDetails||typeof backup.dengueDetails!=='object'||Array.isArray(backup.dengueDetails)))throw Error('Invalid detailed report settings. No data was changed.');
+     const values={'binangonan-leptos-cases-v1':JSON.stringify(backup.cases),'binangonan-threshold-baselines-v1':JSON.stringify(baselines),'binangonan-report-settings-v2':JSON.stringify(signatories)},previous={};if(backup.dengueDetails!==undefined)values['binangonan-dengue-details-v1']=JSON.stringify(backup.dengueDetails);Object.keys(values).forEach(key=>previous[key]=localStorage.getItem(key));
      try{Object.entries(values).forEach(([key,value])=>localStorage.setItem(key,value));}catch(error){Object.entries(previous).forEach(([key,value])=>{try{if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value);}catch{}});throw Error('The browser could not save the import. Check available storage and your existing records before trying again.');}
      location.reload();
    }catch(error){alert(error.message||'The backup could not be read.');}finally{input.value='';}
