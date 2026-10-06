@@ -1,0 +1,19 @@
+#reportPresentation{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:#081c32;color:#fff;overflow:hidden;font:14px/1.4 Arial,sans-serif}
+#reportPresentation[open]{display:flex;flex-direction:column}
+#reportPresentation::backdrop{background:#081c3a}
+body.presenting-report{overflow:hidden}
+.present-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;background:#10385b;border-bottom:1px solid #38618a;flex:none}
+.present-toolbar strong{display:block;font-size:17px}.present-toolbar #presentPeriod{display:block;font-size:12px;color:#bed9ef;margin-top:3px}
+.present-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.present-controls button,.present-controls select{font:inherit;border:1px solid #6484a2;background:#194c79;color:white;border-radius:7px;padding:8px 11px;cursor:pointer}
+.present-controls button:hover:not(:disabled){background:#2164a0}.present-controls button:disabled{opacity:.4;cursor:default}
+.present-controls button:focus-visible,.present-controls select:focus-visible{outline:3px solid #8ed2ff;outline-offset:2px}
+.present-controls #presentClose{background:#edf6ff;color:#143958}.present-fit-label{display:flex;gap:6px;align-items:center}
+#presentCount{min-width:82px;text-align:center;font-variant-numeric:tabular-nums}
+.present-viewport{flex:1;min-height:0;overflow:auto;position:relative;overscroll-behavior:contain;padding:0 16px 16px}
+.present-frame{position:relative;margin-left:auto;margin-right:auto;flex:none}
+#reportPresentation .present-page{position:absolute;left:0;top:0;margin:0!important;max-width:none!important;transform-origin:top left;box-shadow:0 8px 36px #0006;zoom:1!important}
+.present-help{flex:none;text-align:center;background:#10385b;color:#c7dff3;font-size:12px;padding:7px 12px}
+#reportView>.toolbar{flex-wrap:wrap;justify-content:flex-start}#reportView>.toolbar>div:first-child{flex:1;min-width:220px}
+@media(max-width:900px){.present-toolbar{align-items:flex-start;flex-direction:column;padding:10px}.present-toolbar>div:first-child{display:flex;gap:12px;align-items:center}.present-controls{gap:5px}.present-controls button,.present-controls select{padding:7px}.present-help{font-size:11px}.top-actions{flex-wrap:wrap}}
+@media print{#reportPresentation,.present-launch{display:none!important}body.presenting-report{overflow:visible!important}}

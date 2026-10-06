@@ -5,7 +5,7 @@
  const button=document.createElement('button');button.className='btn';button.type='button';button.textContent='Import local backup';button.id='importLocalBackup';
  const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.hidden=true;input.id='localBackupFile';
  document.querySelector('.report-tools .right').prepend(button,input);
- const note=document.createElement('p');note.className='callout public-data-note';note.textContent='Dengue workbook loaded: 1,374 cases for 2025 and 396 for 2026. New entries and edits are saved in this browser; they are not shared automatically.';document.querySelector('.content').prepend(note);
+ const note=document.createElement('p');note.className='callout public-data-note';note.textContent='Workbooks loaded: dengue — 1,374 (2025), 396 (2026); leptospirosis — 25 (2025), 16 (2026). New entries and edits are saved in this browser; they are not shared automatically.';document.querySelector('.content').prepend(note);
  button.onclick=()=>input.click();
  input.onchange=async()=>{
    const file=input.files[0];if(!file)return;

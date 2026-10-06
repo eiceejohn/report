@@ -1,5 +1,6 @@
-(() => {
+(async () => {
  'use strict';
+ await window.LEPTOS_IMPORT_READY;
  const KEY='binangonan-leptos-cases-v1',seed=window.LEPTOS_SEED_DATA||[],$=s=>document.querySelector(s),e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),norm=v=>String(v||'').trim().toLowerCase();
  let cases=[],storageError='';
  try{const saved=localStorage.getItem(KEY);cases=saved?JSON.parse(saved):seed.map(c=>({...c}));if(!Array.isArray(cases))throw Error('Invalid saved case list');}catch(err){storageError='Saved records could not be read. They have not been overwritten. Please restore a valid backup before saving changes.';}
@@ -84,5 +85,5 @@
  $('#resetData').onclick=()=>{if(confirm('Restore only leptospirosis records from the supplied workbook? Locally added leptospirosis records will be removed. Dengue records will be kept.')){const old=cases;cases=[...cases.filter(c=>diseaseOf(c)==='dengue'),...seed.map(c=>({...c,disease:'leptospirosis'}))];if(!persist())cases=old;renderAll();}};
  $('#exportData').onclick=()=>{const data={format:'binangonan-surveillance-v2',cases,dengueDetails:JSON.parse(localStorage.getItem('binangonan-dengue-details-v1')||'{}'),baselines:JSON.parse(localStorage.getItem('binangonan-threshold-baselines-v1')||'{}'),signatories:JSON.parse(localStorage.getItem('binangonan-report-settings-v2')||'{}')},url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=`binangonan-surveillance-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
  window.SurveillanceBatch={context:()=>({disease,year:+year,cases:cases.map(r=>({...r}))}),import:(records,target)=>{if(target!==disease)throw Error('The selected disease changed. Reopen Batch upload.');if(storageError)throw Error(storageError);const ids=new Set(cases.map(r=>r.id)),added=[];for(const r of records){if(r.disease!==disease)throw Error('Wrong disease in upload.');if(!ids.has(r.id)){ids.add(r.id);added.push(r);}}const old=cases;cases=[...cases,...added];if(!persist()){cases=old;throw Error('Could not save records. Existing data was kept.');}renderAll();return{added:added.length,skipped:records.length-added.length};}};
- const initialWeek=disease==='dengue'&&window.DENGUE_WORKBOOK_IMPORT?window.DENGUE_WORKBOOK_IMPORT.defaultWeek:35;$('#reportWeek').value=initialWeek;$('#reportEnd').value=dateForWeek(year,initialWeek);notice(storageError||window.DENGUE_IMPORT_ERROR||'');renderAll();
+ const initialWeek=disease==='dengue'&&window.DENGUE_WORKBOOK_IMPORT?window.DENGUE_WORKBOOK_IMPORT.defaultWeek:(window.LEPTOS_WORKBOOK_IMPORT?.defaultWeek||35);$('#reportWeek').value=initialWeek;$('#reportEnd').value=dateForWeek(year,initialWeek);notice(storageError||window.DENGUE_IMPORT_ERROR||window.LEPTOS_IMPORT_ERROR||'');renderAll();
 })();
