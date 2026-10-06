@@ -20,7 +20,7 @@
 .dengue-page .dg-trend .dg-chart-period br,.dengue-page .dg-distribution .dg-chart-period br{display:none}
 .dengue-page .dg-weekly{margin:2pt 0 0}.dengue-page .dg-weekly svg{height:160pt}
 .dengue-page .dg-threshold-note{font-size:6.8pt!important;line-height:1.15!important;margin-top:2pt!important}
-.dengue-page .dg-overview{display:grid;grid-template-columns:166pt 1fr;gap:12pt;align-items:start;margin-top:6pt}
+.dengue-page .dg-overview{display:grid;grid-template-columns:166pt 1fr;gap:12pt;align-items:start;margin-bottom:6pt}
 .dengue-page .dg-comparison{min-height:169pt;border-radius:8pt;grid-template-columns:60% 40%}
 .dengue-page .dg-years{padding:9pt 5pt}.dengue-page .dg-year+.dg-year{margin-top:9pt}
 .dengue-page .dg-year h3{font-size:17pt;color:var(--dg-ink)}
