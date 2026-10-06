@@ -4,7 +4,8 @@ window.LEPTOS_IMPORT_READY = (async () => {
   if (!release) return;
   const marker = 'binangonan-lepto-workbook-import', key = 'binangonan-leptos-cases-v1';
   try {
-    if (localStorage.getItem(marker) === release.release) return;
+    const previousRelease = localStorage.getItem(marker);
+    if (previousRelease === release.release) return;
     const saved = localStorage.getItem(key), existing = saved === null ? [] : JSON.parse(saved);
     if (!Array.isArray(existing)) throw Error('Saved cases are not a valid list.');
     const incoming = window.LEPTOS_SEED_DATA || [], importedIds = new Set(incoming.map(r => r.id));
@@ -15,7 +16,18 @@ window.LEPTOS_IMPORT_READY = (async () => {
       return importedIds.has(id) ? { ...row, id, disease: 'leptospirosis' } : row;
     }));
     const ids = new Set(merged.map(r => r.id));
-    for (const row of incoming) if (!ids.has(row.id)) { merged.push({ ...row }); ids.add(row.id); }
+    // A correction-only release must not restore previously deleted cases.
+    if (previousRelease !== release.previousRelease) {
+      for (const row of incoming) if (!ids.has(row.id)) { merged.push({ ...row }); ids.add(row.id); }
+    }
+    for (const correction of release.corrections || []) {
+      const row = merged.find(r => r.id === correction.id);
+      if (!row) continue;
+      for (const change of correction.fields) {
+        // Update only an unchanged source value; preserve later local edits.
+        if (['labResult', 'testType'].includes(change.field) && row[change.field] === change.from) row[change.field] = change.to;
+      }
+    }
     localStorage.setItem(key, JSON.stringify(merged));
     localStorage.setItem(marker, release.release);
   } catch (error) {
