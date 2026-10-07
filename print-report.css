@@ -89,3 +89,18 @@
 .source-actions .mesu-actions-list li,.source-actions .mesu-recommendations-list li{margin:0 0 3pt}
 .source-actions .recommend-intro{margin-bottom:7pt}
 .source-actions .rec{margin-bottom:8pt}
+
+/* Match the dengue bulletin's blue palette across all lepto report pages. */
+.source-page{--lepto-blue:#145b98;--lepto-light:#eff6fd;--lepto-ink:#163e65;background:var(--lepto-light);color:var(--lepto-ink)}
+.source-page .source-head .head-text,.source-page .source-summary h3,.source-page .source-actions h3{color:var(--lepto-ink)}
+.source-page .cyan,.source-page .source-banner,.source-page .case-definitions h3,.source-page .source-counter,.source-page .source-counter.deaths,.source-page .source-caption,.source-page .source-figure figcaption,.source-page .source-signatures{background:var(--lepto-blue);color:#fff;border-color:var(--lepto-blue)}
+.source-page .source-table,.source-page .source-figure{border-color:#aec8e1}
+.source-page .source-table th,.source-page .source-table td{color:var(--lepto-ink)}
+.source-page .source-table th{background:#dcecfb}
+.source-page .source-table tbody tr:nth-child(even) td{background:var(--lepto-light)}
+.source-page .source-table thead tr:last-child{border-color:var(--lepto-blue)}
+.source-page .source-table .source-total td{background:var(--lepto-blue);border-color:var(--lepto-blue);color:#fff}
+.source-page .source-signatures .blank-signature{border-color:#c4d8e9}
+.source-page .source-data-note,.source-page .source-threshold-note,.source-page .source-disclaimer{color:#4b6680}
+.source-page svg text{fill:var(--lepto-ink)}
+.source-page svg .muted-chart{fill:#526c85}
