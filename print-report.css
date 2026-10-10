@@ -5,7 +5,7 @@
 .source-page .block{position:absolute}
 .source-page .cyan{background:#00b0f0}
 .source-head{left:18pt;top:52pt;width:557pt;height:67pt;display:flex;align-items:center;justify-content:space-between;gap:8pt}
-.source-head img{object-fit:contain;width:56pt;height:59pt}.source-head .wordmark{width:84pt;height:49pt}.source-head .head-text{flex:1;text-align:center;color:#29411b;font-size:10.3pt;line-height:1.15}.source-head strong{display:block;font-size:11.3pt}
+.source-head img{object-fit:contain;width:56pt;height:59pt;mix-blend-mode:multiply}.source-head .wordmark{width:84pt;height:49pt}.source-head .head-text{flex:1;text-align:center;color:#29411b;font-size:10.3pt;line-height:1.15}.source-head strong{display:block;font-size:11.3pt}
 .source-banner{left:18pt;top:129pt;width:557pt;height:30pt;background:#00b0f0;border:1pt solid #000;display:grid;grid-template-columns:60% 33% 7%;align-items:center;text-align:center;font-weight:bold;font-size:11pt;line-height:1.15}.source-banner b{font-size:17pt}
 .source-intro{left:18pt;top:161pt;width:554pt;height:73pt;display:flex;gap:8pt;text-align:justify;font-size:10.4pt;line-height:1.12}.source-intro img{height:73pt;width:83pt;object-fit:contain}.source-intro p{flex:1;padding-top:2pt}
 .case-definitions{left:24pt;top:240pt;width:361pt;font-size:10.4pt;line-height:1.16;text-align:justify}.case-definitions h3{font:bold 10.5pt Arial;text-align:center;border:1.5pt solid #005370;border-radius:4pt;background:#00b0f0;width:162pt;margin:0 auto 5pt;padding:4pt 0}.case-definitions .probable{margin-top:7pt}.case-definitions .confirmed{margin-top:9pt}.case-definitions .confirmed+p{text-align:center}
