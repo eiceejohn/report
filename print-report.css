@@ -90,8 +90,11 @@
 .source-actions .mesu-actions-list,.source-actions .mesu-recommendations-list{margin:4pt 0 8pt;padding-left:14pt}
 .source-actions .mesu-actions-list li,.source-actions .mesu-recommendations-list li{margin-bottom:3pt}
 .source-actions .recommend-intro{margin-bottom:7pt}.source-actions .rec{position:static;width:auto;margin:0 0 7pt}
-.source-signatures{width:auto;height:85pt;padding:10pt;gap:10pt;border-radius:12pt;flex-direction:row;align-items:center;flex:none;font-size:9pt;line-height:1.15}
-.source-signatures>div{flex:1;min-width:0}.source-signatures .blank-signature{width:85pt}.source-signatures .signature-name{margin:7pt 0}
+.source-page .source-signatures{width:auto;height:auto;min-height:65pt;padding:0;margin-top:18pt;gap:12pt;border:0;border-radius:0;background:none;color:var(--lepto-ink);flex-direction:row;align-items:flex-start;flex:none;font:8.5pt/1.2 Arial,sans-serif}
+.source-signatures>div{flex:1;min-width:0}.source-signatures b{min-height:1.2em}
+.source-signatures .signature-name{display:block;margin:20pt 0 0;padding-top:3pt;border-top:.5pt solid #aec8e1;font-weight:bold}
+.source-signatures .signature-role{display:block}
+.source-page .source-signatures .blank-signature{width:100%;height:1.2em;margin:20pt 0 0;padding-top:3pt;border:0;border-top:.5pt solid #aec8e1}
 .source-disclaimer{width:auto;font-size:7pt;line-height:1.15}
 .dg-table th:first-child,.dg-table td:first-child{width:60%}.dg-table th:nth-child(2),.dg-table th:nth-child(3){width:20%}
 .leptos-bulletin .dg-heading h1{font-size:17pt;white-space:normal;line-height:1.05}

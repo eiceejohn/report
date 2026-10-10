@@ -18,4 +18,4 @@
 .dd-actions-columns .dd-notes-group{margin:0}.dd-actions-columns ol{padding-left:12pt}.dd-actions-columns li{margin-bottom:5pt}
 .dengue-detail-page .dd-recommendations{margin-top:12pt}
 .dd-signatures{display:flex;gap:12pt;margin-top:18pt;text-align:center;font:8.5pt/1.2 Arial;color:#163e65}
-.dd-signatures>div{flex:1;min-width:0}.dd-signatures b,.dd-signatures strong,.dd-signatures span{display:block}.dd-signatures strong{margin-top:20pt;padding-top:3pt;border-top:.5pt solid #aec8e1}
+.dd-signatures>div{flex:1;min-width:0}.dd-signatures b,.dd-signatures strong,.dd-signatures span{display:block}.dd-signatures b{min-height:1.2em}.dd-signatures strong{margin-top:20pt;padding-top:3pt;border-top:.5pt solid #aec8e1}
