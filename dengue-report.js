@@ -18,8 +18,8 @@
     return `<div class="dg-comparison"><div class="dg-years">${[[year,rows],[year-1,prev]].map(([y,data])=>`<div class="dg-year"><h3>${y}</h3><div class="dg-count-pair"><div><span>CASES</span><strong>${data.length}</strong></div><div><span>DEATHS</span><strong>${data.filter(died).length}</strong></div><div class="dg-class-count" data-classification="probable"><span>PROBABLE</span><strong>${data.filter(row=>norm(row.classification)==='probable').length}</strong></div><div class="dg-class-count" data-classification="suspect"><span>SUSPECT</span><strong>${data.filter(row=>norm(row.classification)==='suspect').length}</strong></div></div></div>`).join('')}</div><div class="dg-change"><span>Reported Cases<br>Same Period<br>Last Year</span><strong>${display}</strong><small>${explanation}</small></div></div>`;
   }
 
-  function pyramid(rows,label='Dengue'){
-    const w=480,h=292,left=48,right=18,top=20,bottom=63,plotW=w-left-right,mid=left+plotW/2,rowH=(h-top-bottom)/ageGroups.length;
+  function pyramid(rows,label='Dengue',height=292){
+    const w=480,h=height,left=48,right=18,top=20,bottom=63,plotW=w-left-right,mid=left+plotW/2,rowH=(h-top-bottom)/ageGroups.length;
     const series=ageGroups.map(group=>({group,male:0,maleDeath:0,female:0,femaleDeath:0}));
     let omitted=0;
     rows.forEach(row=>{const group=ageGroup(row.age),sex=norm(row.sex);if(!group || !['male','female'].includes(sex)){omitted++;return;}series.find(s=>s.group===group)[sex+(died(row)?'Death':'')]++;});
@@ -59,8 +59,8 @@
   }
   function distribution(rows,week,forceSplit=false){
     const items=barangays(rows,week),totals={count:rows.length,deaths:rows.filter(died).length};
-    const split=forceSplit&&items.length>22,half=Math.ceil(items.length/2);
-    return `<div class="dg-tables ${split?'dg-two-tables':''}">${split?tablePart(items.slice(0,half),totals,false)+tablePart(items.slice(half),totals,true):tablePart(items,totals,true)}</div>`;
+    const columns=forceSplit?(items.length>32?3:items.length>14?2:1):1,chunk=Math.max(1,Math.ceil(items.length/columns));
+    return `<div class="dg-tables ${columns===3?'dg-three-tables':columns===2?'dg-two-tables':''}">${Array.from({length:columns},(_,i)=>tablePart(items.slice(i*chunk,(i+1)*chunk),totals,i===columns-1)).join('')}</div>`;
   }
 
   function weekly(rows,opt){
@@ -79,7 +79,7 @@
     const label=opt.disease==='leptospirosis'?'Leptospirosis':'Dengue';
     const settings={...opt,year:+opt.year,week:+opt.week||window.BinangonanReport.weekForDate(opt.year,opt.end)},s=window.BinangonanReport.stats(all,settings.year,settings.week),dense=barangays(s.rows,settings.week).length>22;
     const logos=`<div class="dg-seals"><img src="assets/municipality.png" alt="Municipality of Binangonan"><img src="assets/health-office.png" alt="Municipal Health Office"><img src="assets/surveillance.png" alt="Epidemiology and Surveillance Unit"></div>`;
-    return `<section class="dengue-page ${label==='Leptospirosis'?'leptos-bulletin':''} ${dense?'dg-dense':''}" data-page="1"><header class="dg-header"><img class="dg-wordmark" src="assets/binangonan-wordmark.png" alt="Mahal Kong Binangonan"><div class="dg-heading"><h1>${label.toUpperCase()} CASE BULLETIN</h1><h2>AS OF MORBIDITY WEEK 1–${settings.week}</h2><p>(${esc(period(settings)).toUpperCase()})</p></div><div class="dg-office"><p>Municipality of Binangonan, Rizal<br><strong>Municipal Health Office</strong><br>Epidemiology and Surveillance Unit</p>${logos}</div></header><div class="dg-body"><div class="dg-left"><div class="dg-overview">${comparison(s.rows,s.prev,settings.year)}<section class="dg-demographics">${chartTitle('% PROPORTION OF CASES AND DEATHS<br>BY SEX AND AGE GROUP',s.rows,settings)}${pyramid(s.rows,label)}</section></div><section class="dg-trend">${chartTitle('DISTRIBUTION OF '+label.toUpperCase()+' CASES<br>BY MORBIDITY WEEK',s.rows,settings)}<div class="dg-weekly">${weekly(s.rows,settings)}</div>${thresholdNote(settings)}</section></div><section class="dg-distribution">${chartTitle('DISTRIBUTION OF '+label.toUpperCase()+' CASES<br>PER BARANGAY',s.rows,settings)}${distribution(s.rows,settings.week,true)}</section></div><footer class="dg-footer"><div><strong>BINANGONAN MUNICIPAL HEALTH OFFICE</strong><br>Epidemiology and Surveillance Unit<p>Source: local case registry. Figures are provisional and subject to validation and delayed reports. Prior-year comparison uses the same morbidity weeks.</p></div></footer></section>`;
+    return `<section class="dengue-page ${label==='Leptospirosis'?'leptos-bulletin':''} ${dense?'dg-dense':''}" data-page="1"><header class="dg-header"><img class="dg-wordmark" src="assets/binangonan-wordmark.png" alt="Mahal Kong Binangonan"><div class="dg-heading"><h1>${label.toUpperCase()} CASE BULLETIN</h1><h2>AS OF MORBIDITY WEEK 1–${settings.week}</h2><p>(${esc(period(settings)).toUpperCase()})</p></div><div class="dg-office"><p>Municipality of Binangonan, Rizal<br><strong>Municipal Health Office</strong><br>Epidemiology and Surveillance Unit</p>${logos}</div></header><div class="dg-body"><section class="dg-trend">${chartTitle('DISTRIBUTION OF '+label.toUpperCase()+' CASES<br>BY MORBIDITY WEEK',s.rows,settings)}<div class="dg-weekly">${weekly(s.rows,settings)}</div>${thresholdNote(settings)}</section>${comparison(s.rows,s.prev,settings.year)}<section class="dg-demographics">${chartTitle('% PROPORTION OF CASES AND DEATHS<br>BY SEX AND AGE GROUP',s.rows,settings)}${pyramid(s.rows,label,240)}</section><section class="dg-distribution">${chartTitle('DISTRIBUTION OF '+label.toUpperCase()+' CASES<br>PER BARANGAY',s.rows,settings)}${distribution(s.rows,settings.week,true)}</section></div><footer class="dg-footer"><div><strong>BINANGONAN MUNICIPAL HEALTH OFFICE</strong><br>Epidemiology and Surveillance Unit<p>Source: local case registry. Figures are provisional and subject to validation and delayed reports. Prior-year comparison uses the same morbidity weeks.</p></div></footer></section>`;
   }
   window.DengueReport={render,bulletin:render,dashboard,charts:{pyramid},barangays};
 })();

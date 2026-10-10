@@ -5,42 +5,51 @@
 @page dengue{size:A4 portrait;margin:0}
 @media print{body.disease-dengue,body.disease-dengue .main,body.disease-dengue .content{width:210mm!important}body.disease-dengue .dengue-page{page:dengue;width:210mm!important;height:297mm!important;margin:0!important;box-shadow:none!important;zoom:1!important;transform:none!important;break-inside:avoid;break-after:auto;page-break-after:auto}body.disease-dengue .dengue-page,body.disease-dengue .dengue-page *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
-/* Landscape bulletin: blue print palette; dashboard styling stays independent. */
+/* Classification counts use the same year and week cutoff as the case totals. */
+.dg-count-pair .dg-class-count{background:#e6f0f8;color:#163e65;border:1px solid #c4d8e9;padding:4pt 2pt}
+.dg-count-pair .dg-class-count strong{font-size:20pt;margin-top:2pt}
+.dg-dashboard-card .dg-count-pair .dg-class-count strong{font-size:24px}
+
+/* Shared landscape bulletin: weekly trend and comparison above demographics and barangay totals. */
 .dengue-page{--dg-green:#145b98;--dg-light:#eff6fd;--dg-ink:#163e65;width:297mm;height:210mm;padding:7mm 8mm;overflow:visible}
-.dengue-page .dg-header{height:65pt;min-height:0;margin:0 0 12pt;align-items:center;gap:14pt}
+.dengue-page .dg-header{height:59pt;min-height:0;margin:0 0 9pt;align-items:center;gap:14pt}
 .dengue-page .dg-wordmark{width:108pt;height:48pt;object-fit:contain;mix-blend-mode:multiply;flex:none}
 .dengue-page .dg-heading{padding:0}.dengue-page .dg-heading h1{font-size:20pt;color:#fff;letter-spacing:-.5pt}
 .dengue-page .dg-heading h2{font-size:10.5pt}.dengue-page .dg-heading>p{font-size:8pt}
 .dengue-page .dg-office{width:174pt}.dengue-page .dg-seals{margin-top:4pt}.dengue-page .dg-seals img{width:31pt;height:31pt}
-.dengue-page .dg-body{display:grid;grid-template-columns:410pt 1fr;gap:17pt;align-items:start}
-.dengue-page .dg-left{min-width:0}.dengue-page .dg-trend{height:216pt}
+.dengue-page .dg-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:222pt 208pt;grid-template-areas:"trend comparison" "demographics distribution";gap:14pt 17pt;align-items:start}
+.dengue-page .dg-trend{grid-area:trend;min-width:0;height:auto}
 .dengue-page h2{font-size:10pt;line-height:1.12}
 .dengue-page .dg-trend h2 br,.dengue-page .dg-distribution h2 br{display:none}
 .dengue-page .dg-chart-period{font-size:7.5pt!important;margin-top:4pt!important}
-.dengue-page .dg-trend .dg-chart-period br,.dengue-page .dg-distribution .dg-chart-period br{display:none}
-.dengue-page .dg-weekly{margin:2pt 0 0}.dengue-page .dg-weekly svg{height:160pt}
-.dengue-page .dg-threshold-note{font-size:6.8pt!important;line-height:1.15!important;margin-top:2pt!important}
-.dengue-page .dg-overview{display:grid;grid-template-columns:166pt 1fr;gap:12pt;align-items:start;margin-bottom:6pt}
-.dengue-page .dg-comparison{min-height:169pt;border-radius:8pt;grid-template-columns:60% 40%}
-.dengue-page .dg-years{padding:9pt 5pt}.dengue-page .dg-year+.dg-year{margin-top:9pt}
-.dengue-page .dg-year h3{font-size:17pt;color:var(--dg-ink)}
-.dengue-page .dg-count-pair>div,.dengue-page .dg-change{background:var(--dg-green)}
-.dengue-page .dg-count-pair>div{padding:4pt 1pt}.dengue-page .dg-count-pair span{font-size:7pt}
-.dengue-page .dg-count-pair strong{font-size:21pt;margin-top:2pt}
-.dengue-page .dg-change{padding:10pt 4pt;gap:10pt}.dengue-page .dg-change>span{font-size:8pt}
-.dengue-page .dg-change>strong{font-size:16pt}.dengue-page .dg-change small{font-size:6.5pt}
-.dengue-page .dg-demographics{display:block;height:auto;padding:0;margin:0;position:static}
-.dengue-page .dg-demographics h2{font-size:9pt}.dengue-page .dg-demographics .dg-chart-period{font-size:7pt!important}
-.dengue-page .dg-demographics .dg-chart-period br{display:none}
-.dengue-page .dg-demographics .dg-pyramid-svg{height:134pt;margin:2pt 0 0;color:var(--dg-ink)}
+.dengue-page .dg-chart-period br{display:none}
+.dengue-page .dg-weekly{margin:3pt 0 0}.dengue-page .dg-weekly svg{height:167pt}
+.dengue-page .dg-threshold-note{font-size:6.8pt!important;line-height:1.15!important;margin-top:3pt!important}
+.dengue-page .dg-comparison{grid-area:comparison;display:grid;grid-template-columns:minmax(0,57%) minmax(0,43%);height:222pt;min-height:0;border-radius:9pt;align-self:stretch}
+.dengue-page .dg-years{display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:10pt 8pt}
+.dengue-page .dg-year{display:grid;grid-template-columns:42pt minmax(0,1fr);gap:5pt;align-items:center}
+.dengue-page .dg-year+.dg-year{margin-top:10pt}.dengue-page .dg-year h3{font-size:15pt;color:var(--dg-ink);margin:0}
+.dengue-page .dg-count-pair{gap:4pt}.dengue-page .dg-count-pair>div,.dengue-page .dg-change{background:var(--dg-green)}
+.dengue-page .dg-count-pair>div{padding:6pt 2pt}.dengue-page .dg-count-pair span{font-size:7.5pt}
+.dengue-page .dg-count-pair strong{font-size:26pt;margin-top:3pt;overflow-wrap:normal;white-space:nowrap}
+.dengue-page .dg-count-pair .dg-class-count{background:#e6f0f8;padding:4pt 2pt}
+.dengue-page .dg-count-pair .dg-class-count span{font-size:6.5pt}.dengue-page .dg-count-pair .dg-class-count strong{font-size:18pt;margin-top:2pt;line-height:1.05}
+.dengue-page .dg-change{display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:0;padding:16pt 8pt;gap:18pt}
+.dengue-page .dg-change>span{font-size:11pt;line-height:1.25}.dengue-page .dg-change>span br{display:initial}
+.dengue-page .dg-change>strong{font-size:30pt;line-height:1.05}.dengue-page .dg-change small{font-size:8pt;line-height:1.2}
+.dengue-page .dg-demographics{grid-area:demographics;display:block;min-width:0;height:auto;padding:0;margin:0;position:static}
+.dengue-page .dg-demographics h2{font-size:10pt}.dengue-page .dg-demographics .dg-chart-period{font-size:7.5pt!important}
+.dengue-page .dg-demographics .dg-pyramid-svg{height:168pt;margin:3pt 0 0;color:var(--dg-ink)}
 .dengue-page .dg-demographics .dg-data-note{position:static;max-width:none;font-size:6.5pt!important;margin-top:2pt!important}
-.dengue-page .dg-distribution{min-width:0}.dengue-page .dg-tables{display:block}
-.dengue-page .dg-two-tables{display:grid;grid-template-columns:1fr 1fr;gap:8pt;align-items:start}
+.dengue-page .dg-distribution{grid-area:distribution;min-width:0}.dengue-page .dg-tables{display:block}
+.dengue-page .dg-two-tables{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8pt;align-items:start}
+.dengue-page .dg-three-tables{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8pt;align-items:start}
 .dengue-page .dg-table{font-size:8pt!important;line-height:1.12!important;margin-top:6pt!important}
-.dengue-page .dg-table td,.dengue-page .dg-table th{color:var(--dg-ink);padding:2.2pt 1.5pt}
-.dengue-page .dg-table th{font-size:6pt;border-color:var(--dg-green)}
+.dengue-page .dg-table td,.dengue-page .dg-table th{color:var(--dg-ink);padding:1.3pt 1.5pt}
+.dengue-page .dg-table th{font-size:6.2pt;border-color:var(--dg-green)}
+.dengue-page .dg-two-tables .dg-table td,.dengue-page .dg-three-tables .dg-table td{padding-top:.7pt;padding-bottom:.7pt}
+.dengue-page .dg-three-tables .dg-table{font-size:7.5pt!important}.dengue-page .dg-three-tables .dg-table th{font-size:5.8pt}
 .dengue-page .dg-table .dg-total td{background:var(--dg-green)!important;border-color:var(--dg-green);color:#fff}
-.dengue-page .dg-cluster-note{font-size:6.5pt!important;line-height:1.2!important;margin-top:5pt!important}
 .dengue-page .dg-data-note{color:#4b6680}
 .dengue-page .dg-footer{left:8mm;right:8mm;bottom:7mm;border-color:#aec8e1;padding-top:6pt;font-size:7pt}
 .dengue-page .dg-footer>div{display:grid;grid-template-columns:260pt 1fr;column-gap:15pt}
@@ -51,23 +60,3 @@
  html:has(body.disease-dengue),body.disease-dengue,body.disease-dengue .main,body.disease-dengue .content{width:297mm!important}
  body.disease-dengue .dengue-page{width:297mm!important;height:210mm!important;page:dengue}
 }
-
-/* Keep full case counts on one line, including the imported 2025 totals. */
-.dengue-page .dg-comparison{display:block;min-height:0}
-.dengue-page .dg-years{padding:8pt}
-.dengue-page .dg-year{display:grid;grid-template-columns:32pt 1fr;gap:4pt;align-items:center}
-.dengue-page .dg-year+.dg-year{margin-top:7pt}
-.dengue-page .dg-year h3{font-size:13pt;margin:0}
-.dengue-page .dg-count-pair strong{font-size:18pt;overflow-wrap:normal;white-space:nowrap}
-.dengue-page .dg-change{display:grid;grid-template-columns:1fr 65pt;gap:4pt;padding:7pt 8pt}
-.dengue-page .dg-change>span{font-size:7.2pt}.dengue-page .dg-change>span br{display:initial}
-.dengue-page .dg-change>strong{font-size:18pt}
-.dengue-page .dg-change small{grid-column:1/-1;font-size:6.5pt}
-
-/* Classification counts use the same year and week cutoff as the case totals. */
-.dg-count-pair .dg-class-count{background:#e6f0f8;color:#163e65;border:1px solid #c4d8e9;padding:4pt 2pt}
-.dg-count-pair .dg-class-count strong{font-size:20pt;margin-top:2pt}
-.dengue-page .dg-count-pair .dg-class-count{background:#e6f0f8;padding:2pt 1pt}
-.dengue-page .dg-count-pair .dg-class-count span{font-size:6pt}
-.dengue-page .dg-count-pair .dg-class-count strong{font-size:13pt;margin-top:1pt;line-height:1.05}
-.dg-dashboard-card .dg-count-pair .dg-class-count strong{font-size:24px}
