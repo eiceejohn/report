@@ -45,6 +45,7 @@
 <div class="report-tools"><div class="left"><div class="field"><label for="reportYear">REPORTING YEAR</label><select id="reportYear"></select></div><div class="field"><label for="reportWeek">MORBIDITY WEEK</label><input type="number" id="reportWeek" min="1" max="53" value="35" style="width:100px"></div><div class="field"><label for="reportEnd">WEEK ENDING</label><input type="date" id="reportEnd"></div><div class="field"><label for="reportPrepared">PREPARED BY</label><input id="reportPrepared" maxlength="65" placeholder="Name / signature"></div></div><div class="right"><button class="btn" id="exportData">Download data backup</button><button class="btn" id="resetData">Restore leptos workbook</button></div></div>
 <details class="report-signatory-controls"><summary>Report signatories</summary><div class="signer-grid">
 <div class="field"><label for="preparedRole">PREPARER POSITION</label><input id="preparedRole" maxlength="70" value="Disease Surveillance Officer"></div>
+<div class="field"><label for="reportPrepared2">SECOND PREPARER</label><input id="reportPrepared2" maxlength="65" placeholder="Name / signature"></div><div class="field"><label for="preparedRole2">SECOND PREPARER POSITION</label><input id="preparedRole2" maxlength="70" placeholder="Position"></div>
 <div class="field"><label for="reviewed">REVIEWED BY</label><input id="reviewed" maxlength="65" placeholder="Name / signature"></div>
 <div class="field"><label for="reviewedRole">REVIEWER POSITION</label><input id="reviewedRole" maxlength="70" value="Municipal Health Office"></div>
 <div class="field"><label for="noted">NOTED BY</label><input id="noted" maxlength="65" placeholder="Name / signature"></div>
@@ -73,6 +74,7 @@
 <script src="thresholds.js"></script>
 <script src="dengue-report.js"></script>
 <script src="dengue-details.js"></script>
+<script src="case-identity.js"></script>
 <script src="surveillance-app.js"></script>
 <script src="assets/vendor/xlsx.full.min.js"></script>
 <script src="batch-upload.js"></script>

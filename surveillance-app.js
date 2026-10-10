@@ -21,8 +21,8 @@
    $('#diseaseSelect').value=disease;$('#dashWeek').value=week();$('#dashWeek').max=weeksInYear(year);$('#reportWeek').max=weeksInYear(year);
    $('#reportEnd').min=dateForWeek(year,1);$('#reportEnd').max=dateForWeek(year,weeksInYear(year));
    document.body.classList.toggle('disease-dengue',disease==='dengue');
-   $('#dashboardDescription').textContent=disease==='dengue'?'Weekly cases, annual comparison, age and sex, and barangay clustering.':'Weekly monitoring for case counts, demographics, classification, exposure, and laboratory results.';
-   $('#reportHint').textContent=disease==='dengue'?'3 pages · 1 A4 landscape bulletin + 2 Legal portrait detail pages (8.5 × 14 inches). Print at 100%, with background graphics on and headers/footers off.':'3 pages · 13 × 8.5 inches (Long / Folio), landscape. Print at 100%, with background graphics on and headers/footers off.';
+   $('#dashboardDescription').textContent=disease==='dengue'?'Weekly cases, annual comparison, age and sex, and cases and deaths by barangay.':'Weekly monitoring for case counts, demographics, classification, exposure, and laboratory results.';
+   $('#reportHint').textContent=disease==='dengue'?'3 pages · 1 A4 landscape bulletin + 2 Legal portrait detail pages (8.5 × 14 inches). Print at 100%, with background graphics on and headers/footers off.':'4 pages · 1 A4 landscape bulletin + 3 Long / Folio portrait detail pages (8.5 × 13 inches). Print at 100%, with background graphics on and headers/footers off.';
    $('#registryDiseaseColumn').textContent=disease==='dengue'?'Clinical category':'Exposure';
    document.title=`Binangonan ${name()} Surveillance`;
    $('#pageTitle').textContent=view==='dashboard'?`${name()} surveillance dashboard`:view==='cases'?`${name()} case registry`:view==='thresholds'?`${name()} automatic thresholds`:`${name()} report preview`;
@@ -43,9 +43,14 @@
    document.querySelectorAll('.edit-case').forEach(btn=>btn.onclick=()=>openModal(all().find(c=>c.id===btn.dataset.id)));
    document.querySelectorAll('.delete-case').forEach(btn=>btn.onclick=()=>{if(confirm(`Delete ${name().toLowerCase()} case ${btn.dataset.id}?`)){const old=cases;cases=cases.filter(c=>!(diseaseOf(c)===disease&&c.id===btn.dataset.id));if(!persist())cases=old;renderAll();}});
  }
- const signers=['reportPrepared','preparedRole','reviewed','reviewedRole','noted','notedRole'];
- try{const prefs=JSON.parse(localStorage.getItem('binangonan-report-settings-v2')||'{}');signers.forEach(id=>{if(prefs[id]!==undefined)$('#'+id).value=prefs[id];});}catch{}
- function renderReport(){const opt={year:+year,week:week(),end:$('#reportEnd').value,period:periodLabel(year,$('#reportEnd').value),prepared:$('#reportPrepared').value,thresholds:thresholds()};signers.slice(1).forEach(id=>opt[id]=$('#'+id).value);$('#reportPreview').innerHTML=disease==='dengue'?DengueReport.render(all(),opt):BinangonanReport.render(all(),opt);}
+ const signers=['reportPrepared','preparedRole','reportPrepared2','preparedRole2','reviewed','reviewedRole','noted','notedRole'];
+ const defaults={reportPrepared:'Sally Marie P. Piniones, RN',preparedRole:'Municipal Epidemiology Nurse',reportPrepared2:'Giann Carlo C. Apiado',preparedRole2:'Disease Surveillance Officer',noted:'Fidelito C. Ceñidoza, MD',notedRole:'Municipal Health Officer'};
+ try{const prefs=JSON.parse(localStorage.getItem('binangonan-report-settings-v2')||'{}');
+   if(!localStorage.getItem('binangonan-signatory-defaults-v3')){for(const [key,value] of Object.entries(defaults)){if(!String(prefs[key]||'').trim()||['preparedRole','notedRole'].includes(key))prefs[key]=value;}localStorage.setItem('binangonan-report-settings-v2',JSON.stringify(prefs));localStorage.setItem('binangonan-signatory-defaults-v3','20261011');}
+   signers.forEach(id=>{if(prefs[id]!==undefined)$('#'+id).value=prefs[id];});
+ }catch{Object.entries(defaults).forEach(([id,value])=>$('#'+id).value=value);}
+
+ function renderReport(){const opt={year:+year,week:week(),end:$('#reportEnd').value,period:periodLabel(year,$('#reportEnd').value),prepared:$('#reportPrepared').value,thresholds:thresholds()};signers.slice(1).forEach(id=>opt[id]=$('#'+id).value);$('#reportPreview').innerHTML=disease==='dengue'?DengueReport.render(all(),opt):DengueReport.bulletin(all(),{...opt,disease:'leptospirosis'})+BinangonanReport.render(all(),opt);}
  function feedback(text,error=false){$('#baselineFeedback').textContent=text;$('#baselineFeedback').classList.toggle('error',error);}
  function renderThresholdEditor(){
    $('#baselineEditor').innerHTML=SurveillanceThresholds.renderEditor(disease,+year,cases);thresholdDirty=false;
@@ -66,10 +71,16 @@
    $('#modalTitle').textContent=`${record?'Edit':'Add new'} ${name().toLowerCase()} case`;$('#caseModal').classList.add('open');f.elements.id.focus();
  }
  const close=()=>{$('#caseModal').classList.remove('open');editing=null;};
- $('#caseForm').onsubmit=event=>{
-   event.preventDefault();const form=event.target,f=new FormData(form),record={...(editing||{}),disease,id:f.get('id').trim(),year:+f.get('year'),mw:+f.get('mw'),onset:f.get('onset'),sex:f.get('sex'),age:+f.get('age'),classification:f.get('classification'),outcome:f.get('outcome'),exposure:disease==='leptospirosis'?f.get('exposure'):'Unknown',exposurePlace:disease==='leptospirosis'?f.get('exposurePlace').trim()||'Unknown':'Unknown',province:editing?.province||'Rizal',city:editing?.city||'Binangonan',barangay:f.get('barangay').trim(),labResult:f.get('labResult'),testType:f.get('testType').trim()||'Not specified',clinicalCategory:disease==='dengue'?f.get('clinicalCategory'):'',name:editing?.name||''};
-   if(!record.id){alert('Case ID is required.');return;}if(cases.some(c=>c!==editing&&c.id===record.id)){alert('Case ID already exists.');return;}if(record.mw>Math.max(weeksInYear(record.year),editing&&+editing.year===record.year?+editing.mw:0)){alert('Invalid morbidity week for this year.');return;}
+ let savingCase=false;
+ $('#caseForm').onsubmit=async event=>{
+   event.preventDefault();if(savingCase)return;const form=event.target,f=new FormData(form),record={...(editing||{}),disease,id:f.get('id').trim(),year:+f.get('year'),mw:+f.get('mw'),onset:f.get('onset'),sex:f.get('sex'),age:+f.get('age'),classification:f.get('classification'),outcome:f.get('outcome'),exposure:disease==='leptospirosis'?f.get('exposure'):'Unknown',exposurePlace:disease==='leptospirosis'?f.get('exposurePlace').trim()||'Unknown':'Unknown',province:editing?.province||'Rizal',city:editing?.city||'Binangonan',barangay:f.get('barangay').trim(),labResult:f.get('labResult'),testType:f.get('testType').trim()||'Not specified',clinicalCategory:disease==='dengue'?f.get('clinicalCategory'):'',name:editing?.name||''};
+   if(!record.id){alert('Case ID is required.');return;}const originalEditing=editing,originalDisease=disease,saveButton=form.querySelector('[type="submit"]');savingCase=true;saveButton.disabled=true;
+   try{const index=await CaseIdentity.index(cases.filter(c=>c!==originalEditing));if(await index.has(record)){alert('Duplicate case: this Case ID is already registered. Edit the existing record instead.');return;}
+   if(editing!==originalEditing||disease!==originalDisease||!$('#caseModal').classList.contains('open'))return;
+   record.id=CaseIdentity.normalized(record.id);
+   if(record.mw>Math.max(weeksInYear(record.year),editing&&+editing.year===record.year?+editing.mw:0)){alert('Invalid morbidity week for this year.');return;}
    const old=cases;cases=editing?cases.map(c=>c===editing?record:c):[...cases,record];if(!persist()){cases=old;return;}close();renderAll();switchView('cases');
+   }catch(error){alert('Case could not be saved: '+error.message);}finally{savingCase=false;saveButton.disabled=false;}
  };
  $('#caseForm').elements.year.oninput=event=>$('#caseForm').elements.mw.max=weeksInYear(+event.target.value||+year);
  $('#diseaseSelect').onchange=event=>{if(thresholdDirty&&!saveBaseline())return;disease=event.target.value;localStorage.setItem('binangonan-active-disease',disease);$('#caseSearch').value='';renderAll();};
@@ -84,6 +95,7 @@
  const print=async()=>{switchView('report');await Promise.all([...$('#reportPreview').querySelectorAll('img')].map(img=>img.decode().catch(()=>{})));window.print();};$('#topPrint').onclick=print;$('#reportPrint').onclick=print;window.addEventListener('beforeprint',renderReport);document.addEventListener('dengue-details-updated',()=>{renderDashboard();renderReport();});
  $('#resetData').onclick=()=>{if(confirm('Restore only leptospirosis records from the supplied workbook? Locally added leptospirosis records will be removed. Dengue records will be kept.')){const old=cases;cases=[...cases.filter(c=>diseaseOf(c)==='dengue'),...seed.map(c=>({...c,disease:'leptospirosis'}))];if(!persist())cases=old;renderAll();}};
  $('#exportData').onclick=()=>{const data={format:'binangonan-surveillance-v2',cases,dengueDetails:JSON.parse(localStorage.getItem('binangonan-dengue-details-v1')||'{}'),baselines:JSON.parse(localStorage.getItem('binangonan-threshold-baselines-v1')||'{}'),signatories:JSON.parse(localStorage.getItem('binangonan-report-settings-v2')||'{}')},url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=`binangonan-surveillance-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
- window.SurveillanceBatch={context:()=>({disease,year:+year,cases:cases.map(r=>({...r}))}),import:(records,target)=>{if(target!==disease)throw Error('The selected disease changed. Reopen Batch upload.');if(storageError)throw Error(storageError);const ids=new Set(cases.map(r=>r.id)),added=[];for(const r of records){if(r.disease!==disease)throw Error('Wrong disease in upload.');if(!ids.has(r.id)){ids.add(r.id);added.push(r);}}const old=cases;cases=[...cases,...added];if(!persist()){cases=old;throw Error('Could not save records. Existing data was kept.');}renderAll();return{added:added.length,skipped:records.length-added.length};}};
+ window.SurveillanceBatch={context:()=>({disease,year:+year,cases:cases.map(r=>({...r}))}),import:async(records,target)=>{if(target!==disease)throw Error('The selected disease changed. Reopen Batch upload.');if(storageError)throw Error(storageError);const ids=await CaseIdentity.index(cases),added=[];for(const r of records){if(r.disease!==disease)throw Error('Wrong disease in upload.');if(!await ids.has(r)){await ids.add(r);added.push(r);}}if(target!==disease)throw Error('The selected disease changed. Reopen Batch upload.');const old=cases;cases=[...cases,...added];if(!persist()){cases=old;throw Error('Could not save records. Existing data was kept.');}renderAll();return{added:added.length,skipped:records.length-added.length};}};
+
  const initialWeek=disease==='dengue'&&window.DENGUE_WORKBOOK_IMPORT?window.DENGUE_WORKBOOK_IMPORT.defaultWeek:(window.LEPTOS_WORKBOOK_IMPORT?.defaultWeek||35);$('#reportWeek').value=initialWeek;$('#reportEnd').value=dateForWeek(year,initialWeek);notice(storageError||window.DENGUE_IMPORT_ERROR||window.LEPTOS_IMPORT_ERROR||'');renderAll();
 })();

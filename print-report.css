@@ -39,47 +39,6 @@
  .source-page:last-child{break-after:auto;page-break-after:auto}
 }
 
-/* Three Long/Folio pages, reflowed for landscape without scaling the whole report. */
-.source-page{width:936pt;height:612pt}
-.source-head{left:18pt;top:18pt;width:900pt;height:60pt;gap:15pt}
-.source-head .head-text{font-size:11pt}.source-head strong{font-size:12pt}
-.source-head .wordmark{order:-1;width:112pt;height:48pt}
-.source-banner{left:18pt;top:89pt;width:900pt;height:32pt;grid-template-columns:60% 34% 6%}
-.source-intro{left:18pt;top:133pt;width:438pt;height:auto;font-size:10pt;line-height:1.16}
-.source-intro img{width:66pt;height:76pt}
-.case-definitions{left:18pt;top:246pt;width:438pt;font-size:10pt;line-height:1.18}
-.case-definitions h3{margin:0 auto 5pt;padding:3pt 0}.case-definitions .probable{margin-top:10pt}.case-definitions .confirmed{margin-top:10pt}
-.source-counters{left:480pt;top:134pt;width:438pt;display:grid;grid-template-columns:1fr 1fr;gap:10pt}
-.source-counter{height:85pt;padding:6pt 9pt;border-radius:12pt}.source-counter.deaths{width:auto;height:85pt;margin:0;border-radius:12pt}
-.source-counter b,.source-counter.deaths b{font-size:30pt}.source-counter em{font-size:9pt}
-.source-exposure{grid-column:1/-1;margin:0!important;font-size:9pt;line-height:1.15}.source-exposure br{display:none}
-.source-summary{left:18pt;top:472pt;width:438pt;font-size:9pt;line-height:1.15}.source-summary li{padding-bottom:3pt}
-.source-table-wrap{left:480pt;top:257pt;width:438pt}.source-caption{font-size:9.5pt}
-.source-table{font-size:8.7pt!important}.source-table th,.source-table td{padding:2pt 1.8pt}
-.source-table th:first-child,.source-table td:first-child{width:22%}
-.source-table tbody td:nth-child(2),.source-table tbody td:nth-child(3),.source-table tbody td:nth-child(4),.source-table tbody td:nth-child(5){width:8%}
-.source-table tbody td:nth-child(6){width:10%}.source-table tbody td:nth-child(7){width:24%}.source-table tbody td:nth-child(8){width:12%}
-.source-table-wrap.dense .source-table{font-size:8pt!important}.source-table-wrap.dense .source-table td{padding:1.5pt 1.4pt}
-.table-columns{gap:7pt}.table-columns .source-table,.dense .table-columns .source-table{font-size:6.8pt!important}
-.source-weekly{left:18pt;top:18pt;width:900pt;height:253pt}
-.source-threshold-note{left:22pt;top:277pt;width:892pt;font-size:7.5pt;line-height:1.2}
-.source-grid{left:18pt;top:318pt;width:900pt;height:276pt;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:276pt;gap:10pt}
-.source-grid .source-figure:nth-child(2){height:auto}.source-grid .source-figure figcaption{font-size:9pt;min-height:65pt!important}
-.source-grid .figure-period{white-space:normal;font-size:8pt}
-.source-place{left:18pt;top:18pt;width:360pt;height:279pt}
-.source-actions{left:401pt;top:18pt;width:517pt;height:auto;font-size:10.5pt;line-height:1.25}
-.source-actions .action-paragraph,.source-actions .recommend-intro{margin-bottom:12pt}
-.source-actions .rec{position:static;width:auto;margin:0 0 13pt}
-.source-signatures{left:18pt;top:315pt;width:360pt;height:148pt;padding:15pt;gap:12pt;border-radius:15pt;flex-direction:row;align-items:center;font-size:9pt;line-height:1.2}
-.source-signatures>div{flex:1;min-width:0}.source-signatures .blank-signature{width:85pt}.source-signatures .signature-name{margin:10pt 0}
-.source-disclaimer{left:18pt;top:480pt;width:360pt;font-size:8pt;line-height:1.25}
-@page{size:13in 8.5in;margin:0}
-@page leptos{size:13in 8.5in;margin:0}
-@media print{
- html,body,.main,.content{width:13in!important}
- .source-page{page:leptos;width:13in!important;height:8.5in!important}
-}
-
 /* Chromium can paint SVG background rectangles outside their chart when printing at a reduced scale. The figure already supplies the white paper background. */
 @media print {
  .source-figure svg > rect:first-child { fill: none !important; }
@@ -104,3 +63,43 @@
 .source-page .source-data-note,.source-page .source-threshold-note,.source-page .source-disclaimer{color:#4b6680}
 .source-page svg text{fill:var(--lepto-ink)}
 .source-page svg .muted-chart{fill:#526c85}
+
+/* Three portrait detail pages follow the municipal landscape bulletin. */
+.source-page{width:612pt;height:936pt;padding:18pt}
+.source-page .block{position:static;min-width:0}
+.source-head{width:auto;height:65pt;gap:8pt}.source-head .head-text{font-size:9pt}.source-head strong{font-size:10pt}
+.source-head img{width:45pt;height:50pt}.source-head .wordmark{order:-1;width:82pt;height:45pt}
+.source-banner{width:auto;height:34pt;font-size:9pt;grid-template-columns:58% 34% 8%}
+.source-banner b{font-size:18pt}.source-intro{width:auto;height:auto;font-size:9.8pt;line-height:1.2;align-items:center}
+.source-intro img{width:68pt;height:74pt}
+.source-page[data-page="1"]{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10pt 14pt;align-content:start;grid-template-areas:"head head" "banner banner" "intro intro" "definitions counters" "summary summary" "table table"}
+.source-head{grid-area:head}.source-banner{grid-area:banner}.source-intro{grid-area:intro}.case-definitions{grid-area:definitions}.source-counters{grid-area:counters}.source-summary{grid-area:summary}.source-table-wrap{grid-area:table}
+.case-definitions{width:auto;font-size:9.5pt;line-height:1.18}.case-definitions h3{margin:0 auto 5pt;padding:3pt 0;font-size:10pt}.case-definitions .probable,.case-definitions .confirmed{margin-top:8pt}
+.source-counters{width:auto}.source-counter,.source-counter.deaths{height:auto;min-height:77pt;width:auto;padding:7pt;border-radius:10pt}.source-counter.deaths{margin:8pt 0 0}.source-counter b,.source-counter.deaths b{font-size:30pt}.source-counter em{font-size:8pt}
+.source-exposure{margin:10pt 0 0!important;font-size:8.5pt}
+.source-summary{width:auto;font-size:9.2pt;line-height:1.2}.source-summary li{padding-bottom:3pt}
+.source-table-wrap{width:auto}.source-caption{font-size:9.5pt}.source-table{font-size:9pt!important}.source-table th,.source-table td{padding:2pt 3pt}.source-table th:first-child,.source-table td:first-child{width:40%}
+.source-table-wrap.dense .source-table{font-size:8.5pt!important}.source-table-wrap.dense .source-table td{padding:1.5pt 3pt}.table-columns{gap:10pt}.table-columns .source-table,.dense .table-columns .source-table{font-size:8pt!important}
+.source-page[data-page="2"]{display:flex;flex-direction:column;gap:8pt}
+.source-weekly{width:auto;height:258pt;flex:none}.source-threshold-note{width:auto;min-height:25pt;font-size:7pt;flex:none}
+.source-grid{width:auto;height:auto;flex:1;min-height:0;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12pt}
+.source-grid .source-figure:nth-child(2){height:auto}.source-grid .source-figure figcaption{font-size:9pt;min-height:50pt}.source-grid .figure-period{white-space:normal;font-size:8pt}
+.source-page[data-page="3"]{display:flex;flex-direction:column;gap:12pt}
+.source-place{width:100%;height:206pt;flex:none}
+.source-actions{width:auto;height:auto;font-size:10pt;line-height:1.2}.source-actions h3{font-size:10pt}
+.source-actions .mesu-actions-list,.source-actions .mesu-recommendations-list{margin:4pt 0 8pt;padding-left:14pt}
+.source-actions .mesu-actions-list li,.source-actions .mesu-recommendations-list li{margin-bottom:3pt}
+.source-actions .recommend-intro{margin-bottom:7pt}.source-actions .rec{position:static;width:auto;margin:0 0 7pt}
+.source-signatures{width:auto;height:85pt;padding:10pt;gap:10pt;border-radius:12pt;flex-direction:row;align-items:center;flex:none;font-size:9pt;line-height:1.15}
+.source-signatures>div{flex:1;min-width:0}.source-signatures .blank-signature{width:85pt}.source-signatures .signature-name{margin:7pt 0}
+.source-disclaimer{width:auto;font-size:7pt;line-height:1.15}
+.dg-table th:first-child,.dg-table td:first-child{width:60%}.dg-table th:nth-child(2),.dg-table th:nth-child(3){width:20%}
+.leptos-bulletin .dg-heading h1{font-size:17pt;white-space:normal;line-height:1.05}
+@page leptos{size:8.5in 13in;margin:0}
+@page leptosBulletin{size:A4 landscape;margin:0}
+@media print{
+ html,body,.app-shell,.main,.content,#reportView,#reportPreview{width:auto!important;max-width:none!important;min-width:0!important}
+ .source-page{page:leptos;width:8.5in!important;height:13in!important;padding:18pt!important;break-before:page}
+ .leptos-bulletin{page:leptosBulletin;width:297mm!important;height:210mm!important;margin:0!important;box-shadow:none!important;break-after:page;break-inside:avoid}
+ .leptos-bulletin,.leptos-bulletin *{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}

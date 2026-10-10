@@ -13,10 +13,10 @@
      if(file.size>25*1024*1024)throw Error('Please choose a backup smaller than 25 MB.');
      const backup=JSON.parse(await file.text());
      if(backup.format!=='binangonan-surveillance-v2'||!Array.isArray(backup.cases))throw Error('Use the JSON file created by Download data backup in the Binangonan app.');
-     const ids=new Set();
+     const ids=await CaseIdentity.index();
      for(const row of backup.cases){
-       if(!row||typeof row!=='object'||typeof row.id!=='string'||!row.id.trim()||ids.has(row.id)||!Number.isInteger(+row.year)||+row.year<1900||+row.year>2100||!Number.isInteger(+row.mw)||+row.mw<1||+row.mw>(row.disease==='dengue'&&+row.year===2025?53:BinangonanReport.weeksInYear(+row.year)))throw Error('The backup contains invalid or duplicate case records. No data was changed.');
-       ids.add(row.id);
+       if(!row||typeof row!=='object'||typeof row.id!=='string'||!row.id.trim()||await ids.has(row)||!Number.isInteger(+row.year)||+row.year<1900||+row.year>2100||!Number.isInteger(+row.mw)||+row.mw<1||+row.mw>(row.disease==='dengue'&&+row.year===2025?53:BinangonanReport.weeksInYear(+row.year)))throw Error('The backup contains invalid or duplicate case records. No data was changed.');
+       await ids.add(row);
      }
      const baselines=backup.baselines||{},signatories=backup.signatories||{};
      if(typeof baselines!=='object'||Array.isArray(baselines)||typeof signatories!=='object'||Array.isArray(signatories))throw Error('Invalid baseline or signatory settings. No data was changed.');

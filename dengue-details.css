@@ -10,3 +10,12 @@
  .public-data-note{display:none!important}
  html:has(body.disease-dengue),body.disease-dengue,body.disease-dengue .app-shell,body.disease-dengue .main,body.disease-dengue .content,body.disease-dengue #reportView,body.disease-dengue #reportPreview{width:auto!important;max-width:none!important;min-width:0!important}
 }
+/* Only cases/deaths in the barangay table; complete office actions and signatories on the final page. */
+.dd-comparison-table{font-size:8.5pt}.dd-comparison-table th,.dd-comparison-table td{padding:2pt 3pt}
+.dengue-detail-page .dd-weekly{height:214pt}.dengue-detail-page .dd-age{height:207pt}
+.dengue-detail-page>.dd-actions{margin-top:14pt;min-height:0;padding:8pt}
+.dd-actions-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12pt}
+.dd-actions-columns .dd-notes-group{margin:0}.dd-actions-columns ol{padding-left:12pt}.dd-actions-columns li{margin-bottom:5pt}
+.dengue-detail-page .dd-recommendations{margin-top:12pt}
+.dd-signatures{display:flex;gap:12pt;margin-top:18pt;text-align:center;font:8.5pt/1.2 Arial;color:#163e65}
+.dd-signatures>div{flex:1;min-width:0}.dd-signatures b,.dd-signatures strong,.dd-signatures span{display:block}.dd-signatures strong{margin-top:20pt;padding-top:3pt;border-top:.5pt solid #aec8e1}
