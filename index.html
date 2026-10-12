@@ -37,8 +37,8 @@
 </section>
 <section class="view" id="thresholdsView"><div class="toolbar"><div><div class="eyebrow">Historical baseline</div><h2>Automatic alert &amp; epidemic thresholds</h2><p>Separate historical baselines for leptospirosis and dengue in Binangonan.</p></div><div class="field"><label for="thresholdYear">REPORTING YEAR</label><select id="thresholdYear"></select></div></div><div class="baseline-actions"><button class="btn primary" id="saveBaseline">Save historical baseline</button><span id="baselineFeedback" class="baseline-feedback" role="status"></span></div><div id="baselineEditor"></div><p class="status-line">Default method reference: <a href="https://www.foi.gov.ph/documentview/view/pidsr-mop-3rd-edition/" target="_blank" rel="noopener">DOH PIDSR Manual, section 5.3.5</a>. This app uses sample SD (n − 1).</p></section>
 <section class="view" id="casesView">
-<div class="toolbar"><div><div class="eyebrow">Case registry</div><h2>Reported cases</h2><p>Review current records or add a newly reported case for Binangonan.</p></div><div class="filters"><div class="field"><label for="caseSearch">SEARCH</label><input id="caseSearch" placeholder="Case ID, barangay, exposure..." style="min-width:230px"></div><button class="btn primary" id="addCase">＋ Add case</button></div></div>
-<div class="status-line" id="caseStatus"></div><div class="table-wrap" style="margin-top:12px"><table class="data-table"><thead><tr><th>Case ID</th><th>Year / MW</th><th>Sex</th><th>Age</th><th>Barangay</th><th>Classification</th><th id="registryDiseaseColumn">Exposure</th><th>Outcome</th><th></th></tr></thead><tbody id="casesTable"></tbody></table></div>
+<div class="toolbar"><div><div class="eyebrow">Case registry</div><h2>Reported cases</h2><p>Review current records or add a newly reported case for Binangonan.</p></div><div class="filters"><div class="field"><label for="caseSearch">SEARCH</label><input id="caseSearch" placeholder="Case ID, name, DRU, barangay..." style="min-width:230px"></div><button class="btn primary" id="addCase">＋ Add case</button></div></div>
+<div class="status-line" id="caseStatus"></div><p class="registry-notice">Patient details are saved in this browser and included in downloaded backups. Blank fields mean the information has not been recorded.</p><div class="table-wrap" style="margin-top:12px"><table class="data-table registry-table"><thead><tr><th scope="col">Case ID</th><th scope="col">Lab Count</th><th scope="col">Patient Profile</th><th scope="col">Address</th><th scope="col">Clinical Data</th><th scope="col">Classification and Outcome</th><th scope="col">Actions</th></tr></thead><tbody id="casesTable"></tbody></table></div>
 </section>
 <section class="view" id="reportView">
 <div class="toolbar"><div><div class="eyebrow">Weekly report</div><h2>Report preview</h2><p id="reportHint">3 pages · 8.5 × 13 inches (Long / Folio). Print at 100%, with background graphics on and headers/footers off.</p></div><button class="btn primary" id="reportPrint">⎙ Print / Save as PDF</button></div>
@@ -57,13 +57,42 @@
 </div>
 <div class="modal" id="caseModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add new leptospirosis case</h3><p>Enter the fields available at first notification; the report updates immediately.</p></div><button class="close" id="closeModal" aria-label="Close">×</button></div>
-<form class="form" id="caseForm"><div class="form-grid">
-<div class="field"><label>CASE ID</label><input name="id" required placeholder="e.g. 2026-BIN-0001"></div><div class="field"><label>YEAR</label><input name="year" type="number" min="2020" max="2100" required></div><div class="field"><label>MORBIDITY WEEK</label><input name="mw" type="number" min="1" max="53" required></div>
-<div class="field"><label>DATE OF ONSET</label><input name="onset" type="date"></div><div class="field"><label>SEX</label><select name="sex"><option>Male</option><option>Female</option><option>Unknown</option></select></div><div class="field"><label>AGE (YEARS)</label><input name="age" type="number" min="0" max="120" step="0.01" required></div>
-<div class="field"><label>CLASSIFICATION</label><select name="classification"><option>Suspect</option><option>Probable</option><option>Confirmed</option></select></div><div class="field"><label>OUTCOME</label><select name="outcome"><option>Alive</option><option>Died</option></select></div><div class="field" data-leptos-only><label>EXPOSURE</label><select name="exposure"><option>Flood related</option><option>Mud Exposure</option><option>Agriculture related</option><option>Ingestion of contaminated foods/drinks</option><option>Others</option><option>Unknown</option></select></div>
-<div class="field" data-dengue-only hidden><label>RECORDED CLINICAL CATEGORY</label><select name="clinicalCategory"><option>Not recorded</option><option>Dengue without warning signs</option><option>Dengue with warning signs</option><option>Severe dengue</option></select></div>
-<div class="field wide" data-leptos-only><label>PLACE OF EXPOSURE</label><input name="exposurePlace" placeholder="Barangay / municipality"></div><div class="field"><label>BARANGAY</label><input name="barangay" placeholder="e.g. Tayuman"></div><div class="field"><label>LABORATORY RESULT</label><select name="labResult"><option>Unknown</option><option>Pending</option><option>Not tested</option><option>Negative</option><option>Positive</option></select></div><div class="field"><label>TEST CONDUCTED</label><input name="testType" placeholder="RT-PCR, MAT..."></div>
-</div><div class="form-actions"><button type="button" class="btn" id="cancelCase">Cancel</button><button type="submit" class="btn primary">Save case</button></div></form>
+<form class="form" id="caseForm" autocomplete="off"><fieldset class="case-fieldset"><legend>Case ID &amp; Lab Count</legend><div class="form-grid">
+<div class="field"><label for="caseId">CASE ID</label><input id="caseId" name="id" required maxlength="100" placeholder="e.g. 2026-BIN-0001"></div>
+<div class="field"><label for="caseLabCount">LAB COUNT</label><select id="caseLabCount" name="labResult"><option value="Unknown">Not recorded</option><option>Positive</option><option>Negative</option><option>Pending</option><option>Not tested</option></select></div>
+<div class="field"><label for="caseYear">REPORTING YEAR</label><input id="caseYear" name="year" type="number" min="1900" max="2100" required></div>
+<div class="field"><label for="caseWeek">MORBIDITY WEEK</label><input id="caseWeek" name="mw" type="number" min="1" max="53" required></div>
+</div></fieldset>
+<fieldset class="case-fieldset"><legend>Patient Profile</legend><div class="form-grid">
+<div class="field wide"><label for="casePatientName">PATIENT NAME</label><input id="casePatientName" name="name" maxlength="160" autocomplete="off" placeholder="Full name"></div>
+<div class="field"><label for="caseAge">AGE (YEARS)</label><input id="caseAge" name="age" type="number" min="0" max="120" step="0.01" required></div>
+<div class="field"><label for="caseDob">DATE OF BIRTH</label><input id="caseDob" name="dob" type="date"></div>
+<div class="field"><label for="caseDru">DRU (DISEASE REPORTING UNIT)</label><input id="caseDru" name="dru" maxlength="160" placeholder="Reporting hospital / health facility"></div>
+<div class="field"><label for="caseSex">SEX</label><select id="caseSex" name="sex"><option>Male</option><option>Female</option><option>Unknown</option></select></div>
+</div></fieldset>
+<fieldset class="case-fieldset"><legend>Address</legend><div class="form-grid">
+<div class="field wide"><label for="caseAddress">HOUSE / STREET / SITIO / PUROK</label><input id="caseAddress" name="address" maxlength="240" autocomplete="off" placeholder="Address details"></div>
+<div class="field"><label for="caseBarangay">BARANGAY</label><input id="caseBarangay" name="barangay" maxlength="100" placeholder="e.g. Tayuman"></div>
+<div class="field"><label for="caseCity">CITY / MUNICIPALITY</label><input id="caseCity" name="city" value="Binangonan" readonly></div>
+<div class="field"><label for="caseProvince">PROVINCE</label><input id="caseProvince" name="province" value="Rizal" readonly></div>
+</div></fieldset>
+<fieldset class="case-fieldset"><legend>Clinical Data</legend><div class="form-grid">
+<div class="field"><label for="caseFirstConsult">DATE OF FIRST CONSULTATION</label><input id="caseFirstConsult" name="firstConsult" type="date"></div>
+<div class="field"><label for="caseOnset">DATE OF ONSET</label><input id="caseOnset" name="onset" type="date"></div>
+<div class="field"><label for="caseAdmitted">ADMITTED</label><select id="caseAdmitted" name="admitted"><option value="">Not recorded</option><option>Yes</option><option>No</option></select></div>
+</div></fieldset>
+<fieldset class="case-fieldset"><legend>Classification and Outcome</legend><div class="form-grid">
+<div class="field"><label for="caseClassification">CLASSIFICATION</label><select id="caseClassification" name="classification"><option>Suspect</option><option>Probable</option><option>Confirmed</option></select></div>
+<div class="field"><label for="caseOutcome">OUTCOME</label><select id="caseOutcome" name="outcome"><option>Alive</option><option>Died</option></select></div>
+<div class="field" data-leptos-only><label for="caseExposure">EXPOSURE</label><select id="caseExposure" name="exposure"><option>Flood related</option><option>Mud Exposure</option><option>Agriculture related</option><option>Ingestion of contaminated foods/drinks</option><option>Others</option><option>Unknown</option></select></div>
+<div class="field" data-dengue-only hidden><label for="caseClinicalCategory">RECORDED CLINICAL CATEGORY</label><select id="caseClinicalCategory" name="clinicalCategory"><option>Not recorded</option><option>Dengue without warning signs</option><option>Dengue with warning signs</option><option>Severe dengue</option></select></div>
+<div class="field wide" data-leptos-only><label for="caseExposurePlace">PLACE OF EXPOSURE</label><input id="caseExposurePlace" name="exposurePlace" placeholder="Barangay / municipality"></div>
+</div></fieldset>
+<fieldset class="case-fieldset"><legend>Laboratory Details</legend><div class="form-grid">
+
+<div class="field wide"><label for="caseTestType">TEST CONDUCTED</label><input id="caseTestType" name="testType" placeholder="RT-PCR, MAT..."></div>
+</div></fieldset>
+<div class="form-actions"><button type="button" class="btn" id="cancelCase">Cancel</button><button type="submit" class="btn primary">Save case</button></div></form>
 </div></div>
 <script src="seed-data.js"></script>
 <script src="dengue-seed-data.js"></script>

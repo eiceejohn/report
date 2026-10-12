@@ -12,3 +12,15 @@
 .disease-dengue .dg-dashboard-card .dg-table th,.disease-dengue .dg-dashboard-card .dg-table .dg-total td{border-color:#145b98}
 .disease-dengue .dg-dashboard-card .dg-table tbody tr:nth-child(even):not(.dg-total) td{background:#eff6fd}
 .disease-dengue .dg-dashboard-card .dg-pyramid-svg{color:#163e65}
+/* Grouped case registry and notification form. */
+#casesView .registry-table{table-layout:fixed;min-width:1230px}
+.registry-table th:nth-child(1){width:16%}.registry-table th:nth-child(2){width:8%}.registry-table th:nth-child(3){width:22%}.registry-table th:nth-child(4){width:16%}.registry-table th:nth-child(5){width:17%}.registry-table th:nth-child(6){width:14%}.registry-table th:nth-child(7){width:7%}
+.registry-table td{vertical-align:top;overflow-wrap:anywhere;line-height:1.4}
+.registry-table td>strong{display:block;color:#153e63}.registry-table .registry-subtext{display:block;font-size:11px;color:#63758b;margin-top:5px}
+.registry-details{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:3px 7px;margin:7px 0 0;font-size:12px}
+.registry-details dt{font-weight:600;color:#657589}.registry-details dd{margin:0;min-width:0}.registry-table .case-actions{flex-direction:column;align-items:stretch}.registry-table .case-actions .btn{justify-content:center}
+.registry-tags{display:flex;flex-wrap:wrap;gap:6px}.registry-notice{font-size:12px;color:#5f7082;line-height:1.5;margin:8px 0}
+#caseModal .modal-card{width:min(940px,100%)}.case-fieldset{border:1px solid #d9e2ec;border-radius:10px;padding:14px;margin:0;min-width:0}
+.case-fieldset legend{padding:0 7px;font-weight:750;font-size:14px;color:#145b98}.case-fieldset .field{min-width:0}.case-fieldset input,.case-fieldset select{width:100%;min-width:0}
+.case-fieldset input[readonly]{background:#f4f7fb;color:#607285}#caseForm>.form-actions{position:sticky;bottom:0;background:white;padding:12px 0 0;border-top:1px solid #e5ebf2}
+@media(max-width:560px){#caseForm .form-grid{grid-template-columns:1fr}#caseForm .form-grid .wide{grid-column:auto}.case-fieldset{padding:12px}.registry-notice{font-size:11px}}
