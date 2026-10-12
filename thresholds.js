@@ -7,7 +7,7 @@
   const key=(d,y)=>`${d}:${y}`;
   const config=(d,y)=>stored[d]||stored[key(d,y)]||{complete:[],totals:{}};
   const historicalYears=y=>Array.from({length:5},(_,i)=>+y-5+i);
-  const rowDisease=r=>r.disease==='dengue'?'dengue':'leptospirosis';
+  const rowDisease=r=>r.disease||'leptospirosis';
   function counts(rows,d,y){return Array.from({length:53},(_,i)=>rows.filter(r=>rowDisease(r)===d&&+r.year===+y&&+r.mw===i+1&&String(r.city||'Binangonan').trim().toLowerCase()==='binangonan').length);}
   function calculate(d,y,rows,cfg=config(d,y)){
     const years=historicalYears(y),weeks=BinangonanReport.weeksInYear(y),hist=years.map(yr=>({year:yr,values:counts(rows,d,yr)}));

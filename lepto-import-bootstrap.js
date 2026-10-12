@@ -10,7 +10,7 @@ window.LEPTOS_IMPORT_READY = (async () => {
     if (!Array.isArray(existing)) throw Error('Saved cases are not a valid list.');
     const incoming = window.LEPTOS_SEED_DATA || [], importedIds = new Set(incoming.map(r => r.id));
     const merged = await Promise.all(existing.map(async row => {
-      if (row.disease === 'dengue' || /^LEP-\d{4}-[A-F0-9]{12}$/.test(row.id)) return row;
+      if ((row.disease && row.disease !== 'leptospirosis') || /^LEP-\d{4}-[A-F0-9]{12}$/.test(row.id)) return row;
       const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(row.id).trim()));
       const id = `LEP-${row.year}-` + [...new Uint8Array(hash)].map(n => n.toString(16).padStart(2, '0')).join('').slice(0, 12).toUpperCase();
       return importedIds.has(id) ? { ...row, id, disease: 'leptospirosis' } : row;

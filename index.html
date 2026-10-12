@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Municipality of Binangonan leptospirosis and dengue surveillance with automatic historical thresholds and printable reports">
+<meta name="description" content="Municipality of Binangonan leptospirosis, dengue and measles surveillance with automatic historical thresholds and printable reports">
 <title>Binangonan Leptospirosis Surveillance</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="print-report.css">
@@ -18,14 +18,14 @@
 <div class="app-shell">
 <aside class="sidebar">
 <div class="brand"><img src="assets/municipality.png" alt="Municipality of Binangonan seal"><div><strong>BINANGONAN<br>DISEASE SURVEILLANCE</strong><small>Municipal Health Office</small></div></div>
-<div class="disease-picker"><label for="diseaseSelect">Disease programme</label><select id="diseaseSelect"><option value="leptospirosis">Leptospirosis</option><option value="dengue">Dengue</option></select></div>
+<div class="disease-picker"><label for="diseaseSelect">Disease programme</label><select id="diseaseSelect"><option value="leptospirosis">Leptospirosis</option><option value="dengue">Dengue</option><option value="measles">Measles</option></select></div>
 <nav class="nav" aria-label="Main navigation">
 <button class="active" data-view="dashboard"><span class="icon">▦</span><span>Dashboard</span></button>
 <button data-view="cases"><span class="icon">☷</span><span>Case registry</span></button>
 <button data-view="report"><span class="icon">▤</span><span>Report &amp; print</span></button>
 <button data-view="thresholds"><span class="icon">⌁</span><span>Automatic thresholds</span></button>
 </nav>
-<div class="side-note"><strong>Local surveillance workspace</strong><br>Leptospirosis and dengue records stay in this browser. Add cases, maintain historical data, and print municipal reports.</div>
+<div class="side-note"><strong>Local surveillance workspace</strong><br>Leptospirosis, dengue and measles records stay in this browser. Add cases, maintain historical data, and print municipal reports.</div>
 </aside>
 <main class="main">
 <header class="topbar"><div><div class="eyebrow">Municipality of Binangonan · Rizal</div><h1 id="pageTitle">Leptospirosis surveillance dashboard</h1></div><div class="top-actions"><button class="btn" id="topAdd">＋ <span>New case</span></button><button class="btn primary" id="topPrint">⎙ <span>Print report</span></button></div></header>
@@ -35,7 +35,7 @@
 <div class="toolbar"><div><div class="eyebrow">Figure set 1–5</div><h2>Situation dashboard</h2><p id="dashboardDescription">Weekly monitoring for case counts, demographics, classification, exposure, and laboratory results.</p></div><div class="filters"><div class="field"><label for="dashYear">REPORTING YEAR</label><select id="dashYear"></select></div><div class="field"><label for="dashWeek">THROUGH MW</label><input id="dashWeek" class="dashboard-cutoff" type="number" min="1" max="53" value="35"></div></div></div>
 <div class="stats" id="stats"></div><div class="insight"><div><strong id="insightTitle">Surveillance summary</strong><span id="insightText"></span></div><div class="badge" id="insightBadge"></div></div><div class="figure-grid" id="dashboardFigures"></div>
 </section>
-<section class="view" id="thresholdsView"><div class="toolbar"><div><div class="eyebrow">Historical baseline</div><h2>Automatic alert &amp; epidemic thresholds</h2><p>Separate historical baselines for leptospirosis and dengue in Binangonan.</p></div><div class="field"><label for="thresholdYear">REPORTING YEAR</label><select id="thresholdYear"></select></div></div><div class="baseline-actions"><button class="btn primary" id="saveBaseline">Save historical baseline</button><span id="baselineFeedback" class="baseline-feedback" role="status"></span></div><div id="baselineEditor"></div><p class="status-line">Default method reference: <a href="https://www.foi.gov.ph/documentview/view/pidsr-mop-3rd-edition/" target="_blank" rel="noopener">DOH PIDSR Manual, section 5.3.5</a>. This app uses sample SD (n − 1).</p></section>
+<section class="view" id="thresholdsView"><div class="toolbar"><div><div class="eyebrow">Historical baseline</div><h2>Automatic alert &amp; epidemic thresholds</h2><p>Separate historical baselines for leptospirosis, dengue and measles in Binangonan.</p></div><div class="field"><label for="thresholdYear">REPORTING YEAR</label><select id="thresholdYear"></select></div></div><div class="baseline-actions"><button class="btn primary" id="saveBaseline">Save historical baseline</button><span id="baselineFeedback" class="baseline-feedback" role="status"></span></div><div id="baselineEditor"></div><p class="status-line">Default method reference: <a href="https://www.foi.gov.ph/documentview/view/pidsr-mop-3rd-edition/" target="_blank" rel="noopener">DOH PIDSR Manual, section 5.3.5</a>. This app uses sample SD (n − 1).</p></section>
 <section class="view" id="casesView">
 <div class="toolbar"><div><div class="eyebrow">Case registry</div><h2>Reported cases</h2><p>Review current records or add a newly reported case for Binangonan.</p></div><div class="filters"><div class="field"><label for="caseSearch">SEARCH</label><input id="caseSearch" placeholder="Case ID, name, DRU, barangay..." style="min-width:230px"></div><button class="btn primary" id="addCase">＋ Add case</button></div></div>
 <div class="status-line" id="caseStatus"></div><p class="registry-notice">Patient details are saved in this browser and included in downloaded backups. Blank fields mean the information has not been recorded.</p><div class="table-wrap" style="margin-top:12px"><table class="data-table registry-table"><thead><tr><th scope="col">Case ID</th><th scope="col">Lab Count</th><th scope="col">Patient Profile</th><th scope="col">Address</th><th scope="col">Clinical Data</th><th scope="col">Classification and Outcome</th><th scope="col">Actions</th></tr></thead><tbody id="casesTable"></tbody></table></div>
@@ -59,7 +59,7 @@
 <div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add new leptospirosis case</h3><p>Enter the fields available at first notification; the report updates immediately.</p></div><button class="close" id="closeModal" aria-label="Close">×</button></div>
 <form class="form" id="caseForm" autocomplete="off"><fieldset class="case-fieldset"><legend>Case ID &amp; Lab Count</legend><div class="form-grid">
 <div class="field"><label for="caseId">CASE ID</label><input id="caseId" name="id" required maxlength="100" placeholder="e.g. 2026-BIN-0001"></div>
-<div class="field"><label for="caseLabCount">LAB COUNT</label><select id="caseLabCount" name="labResult"><option value="Unknown">Not recorded</option><option>Positive</option><option>Negative</option><option>Pending</option><option>Not tested</option></select></div>
+<div class="field"><label for="caseLabCount">LAB COUNT</label><select id="caseLabCount" name="labResult"><option value="Unknown">Not recorded</option><option>Positive</option><option>Negative</option><option data-measles-only hidden>Equivocal</option><option>Pending</option><option>Not tested</option></select></div>
 <div class="field"><label for="caseYear">REPORTING YEAR</label><input id="caseYear" name="year" type="number" min="1900" max="2100" required></div>
 <div class="field"><label for="caseWeek">MORBIDITY WEEK</label><input id="caseWeek" name="mw" type="number" min="1" max="53" required></div>
 </div></fieldset>
@@ -82,8 +82,11 @@
 <div class="field"><label for="caseAdmitted">ADMITTED</label><select id="caseAdmitted" name="admitted"><option value="">Not recorded</option><option>Yes</option><option>No</option></select></div>
 </div></fieldset>
 <fieldset class="case-fieldset"><legend>Classification and Outcome</legend><div class="form-grid">
-<div class="field"><label for="caseClassification">CLASSIFICATION</label><select id="caseClassification" name="classification"><option>Suspect</option><option>Probable</option><option>Confirmed</option></select></div>
+<div class="field"><label for="caseClassification">CLASSIFICATION</label><select id="caseClassification" name="classification"><option>Suspect</option><option>Probable</option><option>Confirmed</option><option value="Unknown" data-measles-only hidden>Not recorded</option></select></div>
 <div class="field"><label for="caseOutcome">OUTCOME</label><select id="caseOutcome" name="outcome"><option>Alive</option><option>Died</option></select></div>
+<div class="field wide" data-measles-only hidden><label for="caseLabInterpretation">LAB INTERPRETATION</label><input id="caseLabInterpretation" name="labInterpretation"></div>
+<div class="field wide" data-measles-only hidden><label for="caseSourceClassification">RECORDED SOURCE CLASSIFICATION</label><input id="caseSourceClassification" name="sourceClassification"></div>
+<p class="field wide status-line" data-measles-only hidden>Client mapping: Negative → Suspect; Positive / Equivocal → Confirmed. Missing lab results keep the entered classification. Original lab interpretation and source classification are retained.</p>
 <div class="field" data-leptos-only><label for="caseExposure">EXPOSURE</label><select id="caseExposure" name="exposure"><option>Flood related</option><option>Mud Exposure</option><option>Agriculture related</option><option>Ingestion of contaminated foods/drinks</option><option>Others</option><option>Unknown</option></select></div>
 <div class="field" data-dengue-only hidden><label for="caseClinicalCategory">RECORDED CLINICAL CATEGORY</label><select id="caseClinicalCategory" name="clinicalCategory"><option>Not recorded</option><option>Dengue without warning signs</option><option>Dengue with warning signs</option><option>Severe dengue</option></select></div>
 <div class="field wide" data-leptos-only><label for="caseExposurePlace">PLACE OF EXPOSURE</label><input id="caseExposurePlace" name="exposurePlace" placeholder="Barangay / municipality"></div>
@@ -105,6 +108,8 @@
 <script src="dengue-details.js"></script>
 <script src="case-identity.js"></script>
 <script src="registry-enrichment.js"></script>
+<script src="measles-seed-data.js"></script>
+<script src="measles.js"></script>
 <script src="surveillance-app.js"></script>
 <script src="assets/vendor/xlsx.full.min.js"></script>
 <script src="batch-upload.js"></script>

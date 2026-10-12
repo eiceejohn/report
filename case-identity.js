@@ -10,10 +10,11 @@
   async function aliases(row) {
     const raw = String(row.id ?? '').trim(), id = normalized(raw);
     if (!id) throw Error('Case ID is required.');
-    if (/^(DEN|LEP)-\d{4}-[A-F0-9]{12}$/.test(id)) return [id];
-    const prefix = `${row.disease === 'dengue' ? 'DEN' : 'LEP'}-${+row.year}-`;
+    const resolve=key=>window.MEASLES_WORKBOOK_IMPORT?.aliases?.[key]||key;
+    if (/^(DEN|LEP|MEA)-\d{4}-[A-F0-9]{12}$/.test(id)) return [resolve(id)];
+    const prefix = `${row.disease === 'dengue' ? 'DEN' : row.disease === 'measles' ? 'MEA' : 'LEP'}-${+row.year}-`;
     const canonical = prefix + await digest(id);
-    return raw === id ? [id, canonical] : [id, canonical, prefix + await digest(raw)];
+    return (raw === id ? [id, canonical] : [id, canonical, prefix + await digest(raw)]).map(resolve);
   }
   async function index(rows = []) {
     const ids = new Map();
