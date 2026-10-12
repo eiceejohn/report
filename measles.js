@@ -2,8 +2,8 @@
 (() => {
  'use strict';
  const norm=value=>String(value??'').trim().toLowerCase();
- const classification=(lab,current='Unknown')=>['positive','equivocal'].includes(norm(lab))?'Confirmed':norm(lab)==='negative'?'Suspect':['Suspect','Probable','Confirmed'].includes(current)?current:'Unknown';
- const normalize=row=>({...row,disease:'measles',classification:classification(row.labResult,row.classification)});
+ const classification=(lab,current='Unknown',source='')=>['positive','equivocal'].includes(norm(lab))?'Confirmed':norm(lab)==='negative'?'Suspect':['Suspect','Probable','Confirmed'].includes(current)?current:norm(source)==='laboratory confirmed measles'?'Confirmed':'Unknown';
+ const normalize=row=>({...row,disease:'measles',classification:classification(row.labResult,row.classification,row.sourceClassification)});
  const ruleNote='Client reporting categories: Negative = Suspect; Positive / Equivocal = Confirmed. Cases with no recorded result or classification remain unclassified.';
  const dashboard=(rows,prev,opt)=>DengueReport.summaryDashboard(rows,prev,{...opt,disease:'measles'})+`<p class="callout">${ruleNote}</p>`;
  const report=(all,opt)=>DengueReport.bulletin(all,{...opt,disease:'measles'}).replace('Source: local case registry.', 'Source: local case registry. '+ruleNote);
@@ -27,7 +27,8 @@
     if(correctedYear!==+rows[i].year)rows[i]={...rows[i],id:await CaseIdentity.canonical(rows[i]),year:correctedYear};
    }
    const ids=await CaseIdentity.index(rows),added=[];
-   const sources=previousRelease===incoming.previousRelease?incoming.cases.filter(row=>incoming.addedCaseIds.includes(row.id)):incoming.cases;
+   const additions=incoming.additionsByRelease?.[previousRelease]||(previousRelease===incoming.previousRelease?incoming.addedCaseIds:null);
+   const sources=additions?incoming.cases.filter(row=>additions.includes(row.id)):incoming.cases;
    for(const source of sources){const row=normalize(source);if(!await ids.has(row)){added.push(row);await ids.add(row);}}
    localStorage.setItem(key,JSON.stringify([...rows,...added]));localStorage.setItem(marker,incoming.release);
   }catch(error){window.MEASLES_IMPORT_ERROR='Measles workbook could not load: '+error.message;}
