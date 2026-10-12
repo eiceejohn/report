@@ -1,8 +1,17 @@
 # Public GitHub Pages deployment
 
-The owner explicitly authorized publishing the 1,770 dengue case records (2025–2026) on October 5, 2026, including age, sex, barangay, onset date, clinical classification, outcome and laboratory information, without patient names.
+The owner explicitly authorized publishing all 1,811 existing case records with the fields below on October 12, 2026, after reviewing the exact fields, counts and public availability. This supersedes the earlier approval limited to pseudonymous medical records.
 
-The public seed contains 1,374 dengue records for 2025 and 396 for 2026. The 2026 historical threshold baseline contains adjusted weekly aggregate counts for 2021–2025. No names, dates of birth, street addresses, source workbook row identifiers, or raw workbook files are included. The owner also requested publishing the supplied Leptos cases MW 38 workbook on October 6, 2026. The leptospirosis seed contains 25 records for 2025 and 16 for 2026, limited to pseudonymous case ID, year/week, onset date, age, sex, municipality/barangay, classification, outcome, exposure category/municipality and laboratory fields. Patient names, birth dates, street addresses and original patient/case identifiers are excluded.
+| Disease | 2025 | 2026 | Total |
+|---|---:|---:|---:|
+| Dengue | 1,374 | 396 | 1,770 |
+| Leptospirosis | 25 | 16 | 41 |
+
+Approved fields: hashed Case ID, disease, reporting year, morbidity week, full patient name, age, birth date, sex, DRU / reporting facility, house / street / sitio / purok address, barangay, city / municipality, province, first consultation date, onset date, admitted Yes / No, classification, outcome / death, laboratory result and test type, dengue clinical category, leptospirosis exposure category and place of exposure. These identifiable patient medical records are publicly downloadable through the repository and website. Raw source identifiers, patient numbers, Epi IDs, other workbook columns and workbook files are excluded.
+
+Names, birth dates, DRUs and admission status are available for all 1,811 records. The source files have 61 blank street addresses and 488 blank first-consultation dates; these remain blank. The six new profile fields fill only missing values for matching existing Case IDs. Case totals, nonblank local edits, clinical data and locally deleted cases are preserved. Overlapping records from the two lepto files match by Case ID rather than creating new rows. Different Case IDs remain separate.
+
+The 2026 dengue threshold baseline contains adjusted weekly aggregate counts for 2021–2025. The profile update does not change threshold calculations or previously published medical values.
 
 The seed merges once per browser and preserves saved edits and manually entered cases. Later deletions are not restored on reload. New entries and changes remain in that browser; they are not synchronized across visitors. Backups can be exported and imported from Report & print.
 
@@ -16,4 +25,4 @@ Manual entry, Batch upload and backup import check for duplicate Case IDs, inclu
 
 Present report opens the currently selected disease and reporting period as a full-screen slide viewer. Use Previous/Next or arrow keys, Home/End, and Escape to exit. Fit page shows an entire page; Fit width allows scrolling through portrait pages. A full-window viewer works when browser fullscreen is unavailable. Print layouts and page sizes are unchanged.
 
-The case registry and Batch upload support patient name, date of birth, DRU, street address, first consultation date and admission status as optional browser-local fields. Lab Count displays the recorded laboratory result (Positive / Negative, or an existing pending/unknown status). These fields are included in user-downloaded backups; adding the fields to the app does not publish additional patient details or alter the approved public seed datasets.
+The case registry and Batch upload support patient name, date of birth, DRU, street address, first consultation date and admission status. Lab Count displays the recorded laboratory result (Positive / Negative, or an existing pending/unknown status). The approved seed includes these profile details. New entries, uploads and edits stay in the user's browser and downloaded backups; they are not automatically published or synchronized. Batch upload recognizes separate first/middle/family-name columns and the supplied workbook's reporting-facility, street and clinical-date headers.
