@@ -34,8 +34,8 @@ console.log('Verified 1,811 authorized records; unique Case IDs; six approved pr
 
 vm.runInNewContext(fs.readFileSync('measles-seed-data.js','utf8'),ctx,{timeout:1000});
 const measles=ctx.window.MEASLES_WORKBOOK_IMPORT;
-assert.equal(measles.release,'binangonan-measles-20261012');assert.equal(measles.cases.length,14);
-assert.equal(measles.cases.filter(r=>r.year===2025).length,1);assert.equal(measles.cases.filter(r=>r.year===2026).length,13);
+assert.equal(measles.release,'binangonan-measles-20261012-year-correction');assert.equal(measles.cases.length,19);
+assert.equal(measles.cases.filter(r=>r.year===2025).length,6);assert.equal(measles.cases.filter(r=>r.year===2026).length,13);
 const measlesFields=new Set(['id','disease','year','mw','name','dob','age','sex','dru','address','barangay','city','province','firstConsult','onset','admitted','classification','outcome','labResult','testType','sourceClassification','labInterpretation']);
 const measlesIds=new Set();
 for(const r of measles.cases){
@@ -48,8 +48,9 @@ for(const r of measles.cases){
 }
 assert.equal(measles.cases.filter(r=>r.dru).length,13);
 assert.equal(Object.keys(measles.aliases).length,5);
-for(const [alias,target] of Object.entries(measles.aliases)){assert(/^MEA-2026-[A-F0-9]{12}$/.test(alias));assert(measlesIds.has(target));assert(!measlesIds.has(alias));}
-assert.equal(new Set([...all,...measles.cases].map(r=>r.id)).size,1825);
+assert.equal(measles.previousRelease,'binangonan-measles-20261012');assert.equal(measles.addedCaseIds.length,5);assert(measles.addedCaseIds.every(id=>measles.cases.some(r=>r.id===id&&r.year===2025)));
+for(const [alias,target] of Object.entries(measles.aliases)){assert(/^MEA-2026-[A-F0-9]{12}$/.test(alias));assert(measlesIds.has(target));assert(!measlesIds.has(alias));assert.equal(alias.slice(-12),target.slice(-12));assert(target.startsWith('MEA-2025-'));}
+assert.equal(new Set([...all,...measles.cases].map(r=>r.id)).size,1830);
 assert(html.indexOf('measles-seed-data.js')>html.indexOf('case-identity.js')&&html.indexOf('measles.js')>html.indexOf('measles-seed-data.js')&&html.indexOf('measles.js')<html.indexOf('surveillance-app.js'),'Incorrect Measles startup order');
 assert(fs.readFileSync('.github/workflows/pages.yml','utf8').includes('measles-seed-data.js measles.js'),'Measles assets missing from deployment');
-console.log('Verified approved Measles records: 1 (2025), 13 (2026); 5 duplicate aliases; 1,825 unique case records across all diseases.');
+console.log('Verified approved Measles records: 6 (2025), 13 (2026); 5 source-ID year corrections; 1,830 unique case records across all diseases.');
