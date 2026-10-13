@@ -29,7 +29,7 @@ for(const r of all){
 assert.equal(ctx.window.REGISTRY_ENRICHMENT.release,'profile-fields-only-20261012');
 const html=fs.readFileSync('index.html','utf8');
 assert(html.indexOf('case-identity.js')<html.indexOf('registry-enrichment.js')&&html.indexOf('registry-enrichment.js')<html.indexOf('surveillance-app.js'),'Incorrect migration script order');
-assert(fs.readFileSync('.github/workflows/pages.yml','utf8').includes('registry-enrichment.js _site/'),'Profile migration missing from deployed assets');
+assert(fs.readFileSync('.github/workflows/pages.yml','utf8').split('\n').some(line=>line.trim().startsWith('cp ')&&line.includes('registry-enrichment.js')&&line.includes('_site/')),'Profile migration missing from deployed assets');
 console.log('Verified 1,811 authorized records; unique Case IDs; six approved profile fields and expected source blanks.');
 
 vm.runInNewContext(fs.readFileSync('measles-seed-data.js','utf8'),ctx,{timeout:1000});
@@ -60,3 +60,12 @@ assert(measles.cases.every(r=>!r.consultAdmissionDate||/^\d{4}-\d{2}-\d{2}$/.tes
 assert.equal(measles.cases.filter(r=>r.year===2025&&r.classification==='Confirmed').length,1);
 assert.equal(measles.additionsByRelease['binangonan-measles-20261012'].length,17);
 assert.equal(measles.additionsByRelease['binangonan-measles-20261012-year-correction'].length,12);
+
+vm.runInNewContext(fs.readFileSync('registry-names.js','utf8'),ctx,{timeout:1000});
+const registryNames=ctx.window.REGISTRY_NAME_FORMATS;
+const nameTokens=value=>String(value??'').normalize('NFKC').toLowerCase().replace(/[,.]/g,' ').trim().split(/\s+/).filter(Boolean).sort().join(' ');
+assert.equal(Object.keys(registryNames).length,1842);
+for(const row of [...all,...measles.cases]){assert(registryNames[row.id]);assert.equal(nameTokens(registryNames[row.id]),nameTokens(row.name),'Formatted name changes patient identity');}
+assert(html.indexOf('registry-names.js')<html.indexOf('surveillance-app.js'));
+assert(fs.readFileSync('.github/workflows/pages.yml','utf8').includes('registry-names.js'));
+console.log('Verified 1,842 display names; source surnames formatted where available; original names and clinical data retained.');
